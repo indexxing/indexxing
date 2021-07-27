@@ -1,6 +1,6 @@
-👋 Hi, I’m @IndexGit01
-👀 I’m interested in Web Development
-🌱 I’m currently learning Frontend Web Development
+- 👋 Hi, I’m @IndexGit01
+- 👀 I’m interested in Web Development
+- 🌱 I’m currently learning Frontend Web Development
 <!---
 - 💞️ I’m looking to collaborate on ...
 - 📫 How to reach me ...
