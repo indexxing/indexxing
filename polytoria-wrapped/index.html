@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>Polytoria Year in Review (2023)</title>
+    <meta name="theme-color" content="red">
+    <meta name="title" content="Index">
+    <meta name="description" content="See your Polytoria account's year in review for 2023!">
+ 
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css">
+
+    <!-- JAVASCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+  </head>
+  <body>
+    <style>
+        main#page {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        #page-title {
+            text-shadow: 0 4px 13px red;
+        }
+
+        .avatar-image {
+            width: 100px;
+            border-radius: 100%;
+            background: #1a1a1a;
+            padding: 5px;
+        }
+    </style>
+    <main id="page" class="w-50 d-block mx-auto p-5">
+        <div class="text-center">
+            <small class="text-muted">2023</small>
+            <h1 id="page-title">Polytoria Year in Review</h1>
+            <p id="page-desc">Please enter your username below to generate your Polytoria Year in Review statistics.</p>
+        </div>
+        <hr class="divider">
+        <div id="page-content">
+            <input type="text" class="form-control form-control-lg mb-2" placeholder="Username">
+            <button onclick="Submit(this.previousElementSibling.value)" class="btn btn-primary btn-lg mx-auto d-block">Your Wrapped</button>
+        </div>
+    </main>
+    <script>
+        const Params = new URLSearchParams(new URL(window.location.href).search)
+        if (Params.get('user')) {
+            Submit(Params.get('user'))
+        }
+
+        const PageTitle = $('#page-title')
+        const PageDesc = $('#page-desc')
+        const Page = $('#page')
+        const PageContent = $('#page-content')
+
+        async function Submit(username) {
+            const UserID = await GetUserID(username)
+            const i = await GetUserDetails(UserID)
+
+            if (UserID === 'ERROR' || i === 'ERROR') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Account not Found',
+                    text: 'That account was not found'
+                })
+
+                return
+            }
+
+            /*
+            const AvatarImage = document.createElement('img')
+            AvatarImage.src = i.thumbnail.icon
+            AvatarImage.classList = 'img-fluid avatar-image d-block mx-auto'
+            Page.prepend(AvatarImage)
+            */
+
+            PageTitle.innerText = username + "'s " + PageTitle.innerText 
+            PageDesc.innerText = "See the review below!"
+
+            PageContent.innerHTML = `
+            <div class="card mb-2">
+                <div class="card-body">
+                    <small class="text-muted text-uppercase">Did you join before the new site released (April 14th, 2023)?</small>
+                    <h2>${ (new Date(i.registeredAt).getTime() < new Date('2023-04-14').getTime()) ? 'Yes' : 'No' }</h2>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <small class="text-muted text-uppercase">Did you quit after the economy got reset (April 14th, 2023)?</small>
+                    <h2>${ (new Date(i.lastSeenAt).getTime() > new Date('2023-04-14').getTime()) ? 'No' : 'Yes (cry)' }</h2>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <small class="text-muted text-uppercase">Did you survive the November leaks (November 7th, 2023)?</small>
+                    <h2>${ (new Date(i.lastSeenAt).getTime() > new Date('2023-11-07').getTime()) ? 'Yes' : 'No' }</h2>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <small class="text-muted text-uppercase">Are you a free user? (Brixster may have told me to add this, for legal reasons, he did not)</small>
+                    <h2>${ (i.membershipType === 'free') ? 'Yes (' + i.membershipType + ')' : 'No' }</h2>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header">Basic Statistics</div>
+                <div class="card-body">
+                    <h3>In 2023 you had..</h3>
+                    <ul class="list-unstyled">
+                        <li>${i.placeVisits} Place Visits</li>
+                        <li>${i.profileViews} Profile Views</li>
+                        <li>${i.forumPosts} Forum Posts</li>
+                        <li>${i.assetSales} Item Sales</li>
+                    </ul>
+                </div>
+            </div>
+            `
+        }
+
+        async function GetUserID(username) {
+            return fetch('https://api.polytoria.com/v1/users/find?username='+username)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserID - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data.id
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserID - ' + error)
+                });
+        }
+        
+        async function GetUserDetails(userID) {
+            return fetch('https://api.polytoria.com/v1/users/'+userID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserDetails - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserDetails - ' + error)
+                });
+        }
+
+        function $(query) {return document.querySelector(query)}
+    </script>
+  </body>
+</html>
