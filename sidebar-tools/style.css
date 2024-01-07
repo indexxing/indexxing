@@ -1,0 +1,133 @@
+body, html {
+    background: #121212;
+}
+  
+#page {
+    margin-top: 5.5rem;
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+  
+/* When website is being displayed in a sidebar */
+@media (max-width: 675px) {
+    #page {
+      margin-top: 1rem;
+      width: 99%;
+    }
+  
+    #page-title {
+      display: none;
+    }
+}
+  
+.card-header {
+    color: #fff;
+    background: #181818;
+    /*border: 1px solid #2e2e2e;*/
+    text-align: center;
+}
+  
+.mb--5 {
+    margin-bottom: -5px !important;
+}
+  
+#page-title {
+    font-weight: 650;
+    font-size: 4rem;
+}
+  
+#page-title .highlight {
+    font-weight: 800;
+}
+  
+#page-title .highlight.highlight-yellow {
+    background: #91CF00;
+    background: linear-gradient(to bottom, #91CF00 0%, #CF6100 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 0px 20px #7db300;
+}
+  
+#page-title .highlight.highlight-blue {
+    background: #0098CF;
+    background: linear-gradient(to bottom, #0098CF 0%, #522BCF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 0px 20px #0864c7;
+}
+  
+.form-control, .form-control:hover, .form-control:focus, .form-select, .form-select:hover, .form-select:focus {
+    background: #181818 !important;
+    border-color: #181818 !important;
+    color: #dbdbdb !important;
+}
+  
+.form-control::placeholder {
+    color: #b5b5b5;
+}
+  
+dialog .form-control, dialog .form-control:hover, dialog .form-control:focus {
+    background: #383838 !important;
+    border-color: #383838 !important;
+    color: #dbdbdb !important;
+}
+  
+.text-white {
+    color: #fff !important;
+}
+  
+small.small {
+    font-family: monospace;
+    letter-spacing: 1px;
+    color: #696969;
+}
+  
+dialog {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+}
+  
+dialog::backdrop {
+    background: #000000cf;
+}
+  
+textarea.textarea-lg {
+    min-height: 214px !important;
+}
+  
+.tool-card {
+    box-shadow: 0px 0px 0px #101010;
+    border: none;
+}
+  
+.tool-card .card-header {
+    box-shadow: 0 -2px 9px 0px #101010;
+    border: none;
+}
+  
+.small-heading {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+  
+.card.box {
+    background: #181818;
+    border: none; 
+}
+  
+dialog .dialog-header {
+    padding-bottom: 10px;
+}
+  
+dialog .dialog-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}

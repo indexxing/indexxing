@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="assets/icons/icon.png">
+
+    <!-- TITLE -->
+    <title>Sidebar Tools</title>
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body data-bs-theme="dark">
+    <dialog id="bookmark-modal" style="width: 800px; height: 450px;">
+      <div class="dialog-header">
+        <p class="small-heading text-muted mb-0">Use this as a Bookmark!</p>
+        <p class="mb-0">Made for older browsers without sidebar support!</p>
+        <button class="btn btn-danger dialog-close">X</button>
+      </div>
+      <hr class="navbar-divider mt-2 mb-3">
+      <div class="input-group mb-3">
+        <input id="bookmark-input" class="form-control" placeholder="Generating Code.." disabled>
+        <button class="btn btn-primary" onclick="navigator.clipboard.writeText(this.previousElementSibling.value) .then(() => {alert('Successfully copied bookmark code to clipboard!')}) .catch(() => {alert('Failure to copy bookmark code to clipboard.')});">Copy</button>
+      </div>
+      <h2>What is this?</h2>
+      <p>This is a bookmark of your specified tools so if your browser doesn't support sidebars you can still use the site by clicking the bookmark while on a tab and click it again to toggle it!</p>
+      <h2>How do I use this?</h2>
+      <p>Just create a bookmark and replace the URL with the code snippet shown above. The other method is to just simply drag this link <a href="#" id="bookmark-quick-add">Sidebar Tools</a> to your bookmark bar.</p>
+      If you want to see the source code of the code snippet you can do so <a href="bookmark.js" class="text-decoration-none">here</a>. This is for browsers that don't support sidebars, you do not have to use to this if you don't trust it or don't want it.
+    </dialog>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary w-75 d-block mx-auto font-monospace" style="background: transparent !important;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">sidebar tools</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!--<li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>-->
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main class="container" id="page">
+      <div class="text-center mb-5">
+        <h1 id="page-title">Get things done <span class="highlight highlight-yellow font-monospace">faster</span></h1>
+        <h5>Sidebar Tools allows you to put useful tools on your sidebar so you can see<br>information at a glance in your browser.</h5>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body">
+          <ul id="tool-list" class="list-unstyled">
+            <li class="mb-2">
+              <div class="row">
+                <div class="col-md-3">
+                  <select class="form-select w-100" id="viewType">
+                    <option value="list">List View (default)</option>
+                    <option value="gallery">Gallery View</option>
+                  </select>
+                </div>
+                <div class="col">       
+                  <div class="input-group">
+                    <input type="text" id="url" class="form-control" disabled value="At least 1 tool has to be selected!">
+                    <button class="btn btn-success" onclick="navigator.clipboard.writeText(this.previousElementSibling.value) .then(() => {alert('Successfully copied URL to clipboard!')}) .catch(() => {alert('Failure to copy URL to clipboard.')});">Copy</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input type="checkbox" name="alltools" class="form-check-input" id="all-tools-checkbox">
+                <label for="alltools" class="form-check-label">
+                  All Tools
+                </label>
+              </div>
+            </li>
+            <hr class="navbar-divider mt-2 mb-3">
+          </ul>
+        </div>
+      </div>
+      <p class="small-heading text-muted mb-0">Other Resources</p>
+      <a id="bookmark-generate" href="#" class="text-decoration-none">Use this as a Bookmark! (requires at least 1 tool enabled)</a>
+      <br>
+      <a href="view.html?viewType=gallery&disabledTools=true&noDependencies=true&tools=*" class="text-decoration-none">Developer Mode (enables all tools without dependencies)</a>
+    </main>
+    <script src="tools.js" type="module" defer></script>
+    <script src="index.js"></script>
+  </body>  
+</html>

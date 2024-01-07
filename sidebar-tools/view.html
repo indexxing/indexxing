@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="assets/icons/icon.png">
+
+    <!-- TITLE -->
+    <title>Sidebar Tools</title>
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" type="text/css">
+
+    <!-- BOX ICONS -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  </head>
+  <body data-bs-theme="dark">
+    <main class="container" id="page">
+      <div class="text-center mb-3">
+        <h1 id="page-title">Sidebar <span class="highlight highlight-blue font-monospace">Tools</span></h1>
+        <div class="row">
+          <div class="col-md-3">
+            <select id="changeView" class="form-select">
+              <option value="list">List</option>
+              <option value="gallery">Gallery</option>
+            </select>
+          </div>
+          <div class="col">
+            <input id="search" type="text" class="form-control" placeholder="Search Tools...">
+          </div>
+        </div>
+      </div>
+      <ul id="tool-list" class="list-unstyled"></ul>
+      <div id="tool-gallery" class="row"></div>
+    </main>
+    <script src="tools.js" type="module" defer></script>
+    <script type="module">
+      const Page = document.getElementById('page')
+      
+      const Params = new URLSearchParams(new URL(window.location.href).search)
+      window.Parameters = Params
+
+      let EnabledTools = Params.get('tools').split(',')
+      if (EnabledTools.length === 0) { window.location.href = window.location.origin }
+
+      const ViewType = Params.get('viewType') || 'list'
+      const ToolList = document.getElementById('tool-' + ViewType)
+
+      const ChangeViewElement = document.getElementById('changeView')
+      for (let i = 0; i < ChangeViewElement.options.length; i++) {
+        if (ChangeViewElement.options[i].value === ViewType) {
+          ChangeViewElement.selectedIndex = i
+        }
+      }
+      ChangeViewElement.addEventListener('change', function(){
+        ChangeView(ChangeViewElement.options[ChangeViewElement.selectedIndex].value)
+      });
+
+      const SearchInput = document.getElementById('search')
+      SearchInput.addEventListener('onchange', function(){
+        Search(SearchInput.value)
+      });
+      
+      document.addEventListener('DOMContentLoaded', function(){
+        const Tools = window.Tools
+        let HiddenToolCount = 0
+
+        if (EnabledTools[0] === "*") {EnabledTools = Object.keys(Tools)}
+        window.EnabledTools = EnabledTools
+
+        EnabledTools.forEach(tool => {
+          tool = Tools[tool]
+          if (tool !== undefined) {
+            const Constructor = new tool()
+            const Enabled = CheckIfEnabled(Constructor)
+            if (Enabled === false) {HiddenToolCount++}
+
+            if (Enabled === true) {
+              const Element = CreateToolElement(Constructor)
+              Element.setAttribute('data-title', Constructor.title)
+
+              if (ViewType === "list") {
+                ToolList.appendChild(Element)
+                try {
+                  Constructor.initialize(Element)
+                } catch(error) {
+                  console.log(`%c Failure to run ${Constructor.title}:\n`, 'color: crimson;', new Error(error))
+                  Element.remove()
+                  alert(`Failure to run ${Constructor.title} tool - an error occurred!`)
+                }
+              } else if (ViewType === "gallery") {
+                const Dialog = CreateToolDialog(Constructor)
+                Element.children[0].addEventListener('click', function(){
+                  Dialog.showModal()
+                });
+                Dialog.getElementsByClassName('modal-close')[0].addEventListener('click', function(){
+                  Dialog.close()
+                });
+                document.body.prepend(Dialog)
+                ToolList.appendChild(Element)
+                try {
+                  Constructor.initialize(Dialog)
+                } catch(error) {
+                  console.log(`%c Failure to run ${Constructor.title}:\n`, 'color: crimson;', new Error(error))
+                  Dialog.close()
+                  Element.remove()
+                  Dialog.remove()
+                  alert(`Failure to run ${Constructor.title} tool - an error occurred!`)
+                }
+              }
+            }
+          }
+        });
+        if (ToolList.children.length === 0) {
+          window.location.href = window.location.origin
+        }
+        if (HiddenToolCount > 0) {
+          const CountText = document.createElement('p')
+          CountText.classList = 'small-heading text-muted text-uppercase'
+          CountText.innerText = `+${HiddenToolCount} hidden tools`
+          Page.appendChild(CountText)
+        }
+      });
+
+      function CreateToolElement(tool) {
+        if (ViewType === "list") {
+          const Card = document.createElement('li')
+          Card.classList = 'card tool-card mb-3'
+          Card.innerHTML = `
+          <div class="card-header">${tool.title}</div>
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-muted">${tool.desc}</p>
+            </div>
+            <!--<hr class="navbar-divider mt-2 mb-3 w-25 mx-auto">-->
+            ${tool.html}
+          </div>
+          `
+          return Card
+        } else if (ViewType === "gallery") {
+          const Card = document.createElement('div')
+          Card.classList = 'col-md-4'
+          Card.innerHTML = `
+          <a href="#${tool.id}" class="text-reset text-decoration-none">
+            <div class="card mb-3" style="border-left: 7px solid #0079cf; height: 175px;">
+              <div class="card-body">
+                <p class="small-heading text-muted mb-0">${tool.title}</p>
+                <p>${tool.desc}</p>
+              </div>
+            </div>
+          </a>
+          `
+          return Card
+        }
+      }
+
+      function CreateToolDialog(tool) {
+        const Dialog = document.createElement('dialog')
+        Dialog.style.width = '800px'
+        Dialog.style.height = '450px'
+        Dialog.style.overflow = 'hidden'
+
+        let DependenciesList = ''
+        if (tool.dependencies !== undefined && tool.dependencies.length > 0) {
+          DependenciesList = `
+          <p class="small-heading text-muted mb-0"><i class='bx bx-code-block'></i> Dependencies</p>
+          <ul class="list-unstyled">
+            ${tool.dependencies.map((x, index) => `<li><a href="${x.URL}" class="text-decoration-none" target="_blank">#${index +1}. ${x.display}</a></li>`)}
+          </ul>
+          `
+        }
+        
+        Dialog.innerHTML = `
+        <div class="row h-100">
+          <div class="col-md-4" style="border-right: 1px solid rgba(255, 255, 255, 0.15); overflow: hidden;">
+            <div class="h-100 position-relative">
+              <p class="small-heading text-muted mb-0">#${tool.id}</p>
+              <h3>${tool.title}</h3>
+              <p class="text-muted">${tool.desc}</p>
+              ${DependenciesList}
+              <button class="btn btn-danger btn-sm w-100 position-absolute modal-close" style="bottom: 0; border-bottom-left-radius: 10px;">Close</button>
+            </div>
+          </div>
+          <div class="col p-3" style="overflow: hidden;">
+            ${tool.html}
+          </div>
+        </div>
+        `
+        return Dialog
+      }
+
+      function Search(query) {
+        query = query.toLowerCase()
+        Array.from(ToolList.children).forEach(tool => {
+          const Title = tool.getAttribute('data-title').toLowerCase()
+          if (Title.startsWith(query)) {
+            tool.style.display = 'block'
+          } else {
+            tool.style.display = 'none'
+          }
+        })
+      }
+
+      function CheckIfEnabled(constructor) {
+        const Conditions = [
+          // Check if Enabled in Code:
+          (constructor.enabled === true || Params.get('disabledTools') === "true"),
+
+          // Check if Dependencies Exist
+          !(Params.get('noDependencies') === "true" && constructor.dependencies !== undefined && constructor.dependencies.length > 0)
+        ]
+        console.log(!(Conditions.includes(false)), Conditions)
+        return !(Conditions.includes(false))
+      }
+      window.CheckIfEnabled = CheckIfEnabled
+
+      function ChangeView(newView) {
+        const OldView = Params.get('viewType')
+        console.log(newView, OldView)
+        window.location.href = window.location.href.replace(`viewType=${OldView}`, `viewType=${newView}`)
+      }
+    </script>
+  </body>  
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta name="theme-color" content="red">
+    <meta name="color-scheme" content="red">
+    
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>Polytoria Account Level</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="Polytoria Year in Review">
+    <meta name="description" content="See your Polytoria account's level! (based off Polytoria Community Bot)">
+ 
+    <!-- CSS -->
+    <link rel="stylesheet" href="../style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+  </head>
+  <body>
+    <style>
+        :root {
+            --page-accent: red;
+        }
+    </style>
+    <main id="page" class="small-page text-center">
+        <small class="text-muted"><a href="../" class="text-decoration-none"><- go back</a></small>
+        <h1 id="page-title">Polytoria Account Level</h1>
+        <p id="page-desc">Please enter your username below to generate your Polytoria account's level (level values based off <a href="https://github.com/Polytoria/CommunityBot" target="_blank">Polytoria Community Bot</a>).</p>
+        <hr class="divider">
+        <div id="page-content">
+            <input type="text" class="form-control form-control-lg mb-2" placeholder="Username">
+            <button onclick="/*Submit(this.previousElementSibling.value)*/ window.location.href = window.location.href + '?user=' + this.previousElementSibling.value" class="btn btn-success btn-lg mx-auto d-block">Submit</button>
+        </div>
+    </main>
+    <script>
+        const PageTitle = $('#page-title')
+        const PageDesc = $('#page-desc')
+        const Page = $('#page')
+        const PageContent = $('#page-content')
+
+        const Params = new URLSearchParams(new URL(window.location.href).search)
+        if (Params.get('user')) {
+            Submit(Params.get('user'))
+        }
+
+        async function Submit(username) {
+            const UserID = await GetUserID(username)
+            const i = await GetUserDetails(UserID)
+            window.UserDetails = i
+
+            if (UserID === 'ERROR' || i === 'ERROR') {
+                alert('No account found associated with that username. Please make sure you entered the correct username and try again.')
+                return
+            }
+
+            PageTitle.innerText = username + "'s " + PageTitle.innerText 
+            PageDesc.innerText = "See the level breakdown below!"
+
+            let LevelResult = 0
+            let Rank = "noob"
+
+            PageContent.innerHTML = `
+            <small class="text-muted text-uppercase">Level Result</small>
+            <h1>${ LevelResult.toLocaleString() } (${ Rank })</h1>
+            `
+        }
+
+        async function GetUserID(username) {
+            return fetch('https://api.polytoria.com/v1/users/find?username='+username)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserID - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data.id
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserID - ' + error)
+                });
+        }
+        
+        async function GetUserDetails(userID) {
+            return fetch('https://api.polytoria.com/v1/users/'+userID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserDetails - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserDetails - ' + error)
+                });
+        }
+
+        function $(query) {return document.querySelector(query)}
+    </script>
+  </body>
+</html>
