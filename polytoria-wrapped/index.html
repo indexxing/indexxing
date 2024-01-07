@@ -19,8 +19,13 @@
     <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
   </head>
   <body>
+    <style>
+        :root {
+            --page-accent: red;
+        }
+    </style>
     <main id="page" class="small-page text-center">
-        <small class="text-muted"><a href="../"><- go back</a> | 2023</small>
+        <small class="text-muted"><a href="../" class="text-decoration-none"><- go back</a> | 2023</small>
         <h1 id="page-title">Polytoria Year in Review</h1>
         <p id="page-desc">Please enter your username below to generate your Polytoria Year in Review statistics.</p>
         <hr class="divider">
@@ -69,7 +74,7 @@
                         <div class="card-body">
                             <small class="text-muted text-uppercase">Did you join before the new site released?</small>
                             <h2>${ (new Date(i.registeredAt).getTime() < new Date('2023-04-14').getTime()) ? 'Yes' : 'No' }</h2>
-                            <small class="text-muted text-uppercase">(April 14th, 2023)</small>
+                            <small class="text-muted text-uppercase">RELEASED April 14th, 2023</small>
                         </div>
                     </div>
                 </div>
@@ -78,7 +83,7 @@
                         <div class="card-body">
                             <small class="text-muted text-uppercase">Did you quit after the economy got reset?</small>
                             <h2>${ (new Date(i.lastSeenAt).getTime() > new Date('2023-04-14').getTime()) ? 'No' : 'Yes' }</h2>
-                            <small class="text-muted text-uppercase">(April 14th, 2023)</small>
+                            <small class="text-muted text-uppercase">RESET ON April 14th, 2023</small>
                         </div>
                     </div>
                 </div>
@@ -89,7 +94,7 @@
                         <div class="card-body">
                             <small class="text-muted text-uppercase">Did you survive the November leaks?</small>
                             <h2>${ (new Date(i.lastSeenAt).getTime() > new Date('2023-11-07').getTime()) ? 'Yes' : 'No' }</h2>
-                            <small class="text-muted text-uppercase">(November 7th, 2023)</small>
+                            <small class="text-muted text-uppercase">HAPPENED ON November 7th, 2023</small>
                         </div>
                     </div>
                 </div>
@@ -99,7 +104,7 @@
                             <!-- Are you a free user? (Brixster may have told me to add this, for legal reasons, he did not) -->
                             <small class="text-muted text-uppercase">Do you have a membership?</small>
                             <h2>${ (i.membershipType === 'free') ? 'No' : 'Yes' }</h2>
-                            <small class="text-muted text-uppercase">${i.membershipType.replace('plus', 'plus ')}</small>
+                            <small class="text-muted text-uppercase">MEMBERSHIP: ${i.membershipType.replace('plus', 'plus ')}</small>
                         </div>
                     </div>
                 </div>   
