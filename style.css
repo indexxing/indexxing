@@ -1,0 +1,26 @@
+main#page.small-page {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 50%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 3rem;
+}
+
+#page-title {
+    text-shadow: 0 4px 13px var(--page-accent);
+}
+
+.avatar-image {
+    width: 100px;
+    border-radius: 100%;
+    background: #1a1a1a;
+    padding: 5px;
+}
+
+.text-quote {
+    border-left: 10px solid #1a1a1a;
+    border-radius: 5px;
+    padding-left: 10px;
+}
