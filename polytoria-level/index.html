@@ -59,11 +59,53 @@
             PageDesc.innerText = "See the level breakdown below!"
 
             let LevelResult = 0
-            let Rank = "noob"
+            const LevelDetails = {
+                Rank: "noob",
+                Values: {
+                    forum: 0,
+                    economy: 0,
+                    fame: 0,
+                    accountAgeMonths: 0
+                }
+            }
+
+            LevelDetails.Values.accountAgeMonths = GetMonthDifference(new Date(i.registeredAt), new Date())
+
+            const LevelSubresults = {
+                "2": 12 * ((-1 / ((1 * LevelDetails.Values.accountAgeMonths) + 0.4) + 1)),
+                "3": 8 * ((-1 / ((i.forumPosts / 25) + 1) + 1)),
+                "4": 15 * ((-1 / ((i.profileViews / 1500) + 1) + 1)),
+                "5": 10 * ((-1 / ((i.netWorth / 30000) + 1) + 1)),
+                "6": 10 * ((-1 / ((i.assetSales / 3) + 1) + 1)),
+            }
+            LevelResult = Math.round(LevelSubresults["2"] + LevelSubresults["3"] + LevelSubresults["4"] + LevelSubresults["5"] + LevelSubresults["6"])
+
+            if (LevelResult > 15) {
+                LevelDetails.Rank = 'above average'
+                if (LevelResult > 50) {
+                    LevelDetails.Rank = 'insane'
+                if (LevelResult === 69) {
+                    LevelDetails.Rank = 'funny number'
+                } else if (LevelResult > 75) {
+                    LevelDetails.Rank = 'WOW'
+                }
+            }
+            } else {
+                LevelDetails.rank = 'noob'
+            }
+
+            LevelDetails.Values.economy = Math.round(LevelSubresults["5"] + LevelSubresults["6"])
+            LevelDetails.Values.fame = Math.round(LevelSubresults["3"] + LevelSubresults["4"])
+            LevelDetails.Values.forum = Math.round(LevelSubresults["3"])
 
             PageContent.innerHTML = `
             <small class="text-muted text-uppercase">Level Result</small>
-            <h1>${ LevelResult.toLocaleString() } (${ Rank })</h1>
+            <h1>${ LevelResult.toLocaleString() } (${ LevelDetails.Rank })</h1>
+            <ul class="list-unstyled">
+                <li>Forum Level: ${LevelDetails.Values.forum}</li>
+                <li>Economy Level: ${LevelDetails.Values.economy}</li>
+                <li>Fame Level: ${LevelDetails.Values.fame}</li>
+            </ul>
             `
         }
 
@@ -102,6 +144,14 @@
         }
 
         function $(query) {return document.querySelector(query)}
+
+        // Code from https://github.com/Polytoria/CommunityBot dateUtils but cleaned up to fit my code style
+        function GetMonthDifference(date1, date2) {
+            let Difference = (date2.getFullYear() - date1.getFullYear()) * 12
+            Difference -= date1.getMonth()
+            Difference += date2.getMonth()
+            return Difference <= 0 ? 0 : Difference
+        }
     </script>
   </body>
 </html>
