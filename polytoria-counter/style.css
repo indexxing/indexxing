@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --polytoria-red: #FF5951;
+}
+
+html, body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  color: #bababa;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+#page {
+  background: #212121;
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+#page::-webkit-scrollbar { /* WebKit */
+  width: 0;
+  height: 0;
+}
+
+#sidebar {
+  background: hsla(0, 0%, 13%, 1);
+  background: linear-gradient(90deg, hsla(0, 0%, 13%, 1) 0%, hsla(3, 43%, 39%, 1) 60%, hsla(3, 100%, 66%, 1) 100%);
+  background: -moz-linear-gradient(90deg, hsla(0, 0%, 13%, 1) 0%, hsla(3, 43%, 39%, 1) 60%, hsla(3, 100%, 66%, 1) 100%);  
+  background: -webkit-linear-gradient(90deg, hsla(0, 0%, 13%, 1) 0%, hsla(3, 43%, 39%, 1) 60%, hsla(3, 100%, 66%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#212121", endColorstr="#903D39", GradientType=1 );
+  height: 100vh;
+}
+
+h1, h2, .title, .subtitle {
+  color: #fff;
+  font-weight: 600;
+}
+
+a.link-reset {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:not(.btn):not(.link-reset) {
+  color: var(--polytoria-red) !important;
+  text-decoration: underline;
+}
+
+.card {
+  background: #1a1a1a;
+  border-color: #303030;
+  color: #bababa;
+}
+
+.card-body {
+  z-index: 1;
+}
+
+.card-header {
+  background: #1c1c1c;
+  color: #fff;
+  z-index: 2;
+}
+
+.card-background-image {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 90%;
+  padding: 1px;
+  background-image: url(client-bg.png);
+  background-size: contain;
+  filter: brightness(0.5);
+  z-index: -1;
+  border-radius: var(--bs-card-inner-border-radius);
+}
+
+.img-rounded {
+  border-radius: 1.25rem;
+}
+
+small {
+  font-size: 1rem;
+  color: #bababa !important;
+}
+
+.guild-banner[src="https://c0.ptacdn.com/guilds/banners/default.png"] {
+  background: #3C3C3C;
+}
+
+.guild-banner.img-rounded {
+  border-radius: 0.75rem;
+}
+
+#sidebar ul li {
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0px 4px 10px #7d3430;
+  border-radius: 0.225rem;
+}
+
+#sidebar ul li.active {
+  font-weight: bold;
+  padding-left: 7.5px;
+  border-left: 3.5px solid #fff;
+}

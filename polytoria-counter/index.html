@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Polytoria Counter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+  </head>
+  <body style="filter: blur(5px);">
+    <div class="row">
+      <div class="col-md-3 p-5" id="sidebar">
+        <div class="ml-5">
+          <h1 style="text-shadow: 0px 4px 10px #7d3430;">Polytoria Counter</h1>
+          <ul class="list-unstyled" id="sidebar-nav">
+            <li data-pathname="/"><a href="/" class="link-reset">Home</a></li>
+          </ul>
+          <div style="position: absolute; left: 0; bottom: 0; margin: 10px; font-size: 0.8rem;">
+            Inspiration from <a href="https://polytoria.com/users/18781" target="_blank">Hawli</a>
+            <br>
+            Created by <a href="https://polytoria.com/users/2782" target="_blank">Index</a>
+          </div>
+        </div>
+      </div>
+      <div class="col p-5" id="page">
+        <div class="card text-center mb-3">
+          <div class="card-header">
+            <button id="loadUsersBtn" class="btn btn-danger" onclick="LoadUsers();" style="padding: 5px; padding-bottom: 0px; /* margin-bottom: 0px; */ font-size: 0.4rem; /* line-height: 1; */ position: absolute; top: 0; left: 0; border-top-right-radius: 0px; border-bottom-left-radius: 0px;">
+              <span class="material-icons-outlined" style="font-size: 20px;">refresh</span>
+            </button>
+            Users
+          </div>
+          <div class="card-body">
+            <div class="card-background-image"></div>
+            <h1 style="text-shadow: 0px 4px 10px #000;"><span id="userCount">-</span> Users</h1>
+            <h3><span id="userCountUntilMilestone">-</span> user(s) until the next milestone (<span id="userCountMilestone">-</span>)!</h3>
+            <h5>Fun fact: <span id="bannedUserPercent">-</span>% of users included in that user count are banned, so the real count is <span id="realUserCount">-</span> users!</h5>
+            <hr class="navbar-divider w-75 mt-3 mb-3 mx-auto">
+            <p>Recently-Created Accounts:</p>
+            <div id="userCountList" class="row mx-auto" style="width: fit-content;"></div>
+          </div>
+        </div>
+        <div class="card text-center mb-3">
+          <div class="card-header">
+            <button id="loadPlacesBtn" class="btn btn-danger" onclick="LoadPlaces();" style="padding: 5px; padding-bottom: 0px; /* margin-bottom: 0px; */ font-size: 0.4rem; /* line-height: 1; */ position: absolute; top: 0; left: 0; border-top-right-radius: 0px; border-bottom-left-radius: 0px;">
+              <span class="material-icons-outlined" style="font-size: 20px;">refresh</span>
+            </button>
+            Places
+          </div>
+          <div class="card-body">
+            <div class="card-background-image"></div>
+            <h1 style="text-shadow: 0px 4px 10px #000;"><span id="placeCount">-</span> Places</h1>
+            <hr class="navbar-divider w-75 mt-3 mb-3 mx-auto">
+            <p>Recently-Created Places:</p>
+            <div id="placeCountList" class="row mx-auto" style="width: fit-content;"></div>
+          </div>
+        </div>
+        <div class="card text-center mb-3">
+          <div class="card-header">
+            <button id="loadGuildsBtn" class="btn btn-danger" onclick="LoadGuilds();" style="padding: 5px; padding-bottom: 0px; /* margin-bottom: 0px; */ font-size: 0.4rem; /* line-height: 1; */ position: absolute; top: 0; left: 0; border-top-right-radius: 0px; border-bottom-left-radius: 0px;">
+              <span class="material-icons-outlined" style="font-size: 20px;">refresh</span>
+            </button>
+            Guilds
+          </div>
+          <div class="card-body">
+            <div class="card-background-image"></div>
+            <h1 style="text-shadow: 0px 4px 10px #000;"><span id="guildCount">-</span> Guilds</h1>
+            <hr class="navbar-divider w-75 mt-3 mb-3 mx-auto">
+            <p>Recently-Created Guilds:</p>
+            <div id="guildCountList" class="row mx-auto" style="width: fit-content;"></div>
+          </div> 
+        </div>
+        <div class="card text-center">
+          <div class="card-header">
+            <button id="loadAssetsBtn" class="btn btn-danger" onclick="LoadAssets();" style="padding: 5px; padding-bottom: 0px; /* margin-bottom: 0px; */ font-size: 0.4rem; /* line-height: 1; */ position: absolute; top: 0; left: 0; border-top-right-radius: 0px; border-bottom-left-radius: 0px;">
+              <span class="material-icons-outlined" style="font-size: 20px;">refresh</span>
+            </button>
+            Assets
+          </div>
+          <div class="card-body">
+            <div class="card-background-image"></div>
+            <h1 style="text-shadow: 0px 4px 10px #000;">
+              <span id="assetCount">-</span> Assets
+            </h1>
+            <div class="row">
+              <div class="col">
+                <h3><span id="itemCountTotal">-</span> Items (<span id="itemCountPercent">-</span>%)</h3>
+              </div>
+              <div class="col">
+                <h3><span id="assetCountTotal">-</span> Assets (<span id="assetCountPercent">-</span>%)</h3>
+              </div>
+            </div>
+            <hr class="navbar-divider w-75 mt-3 mb-3 mx-auto">
+            <p>Recently-Created Assets:</p>
+            <div id="assetCountList" class="row mx-auto" style="width: fit-content;"></div>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
