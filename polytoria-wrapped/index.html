@@ -28,10 +28,13 @@
         <small class="text-muted"><a href="../" class="text-decoration-none"><- go back</a> | 2023</small>
         <h1 id="page-title">Polytoria Year in Review</h1>
         <p id="page-desc">Please enter your username below to generate your Polytoria Year in Review statistics.</p>
+        <div role="alert" class="alert bg-danger">
+            <b>NEW!</b> Want to have your data properly recorded for 2024? Submit your username to <a onclick="NewYearForm()" style="text-decoration: underline; cursor: pointer;">this form</a>!
+        </div>
         <hr class="divider">
         <div id="page-content">
             <input type="text" class="form-control form-control-lg mb-2" placeholder="Username">
-            <button onclick="/*Submit(this.previousElementSibling.value)*/ window.location.href = window.location.href + '?user=' + this.previousElementSibling.value" class="btn btn-success btn-lg mx-auto d-block">Submit</button>
+            <button onclick="window.location.href = window.location.href + '?user=' + this.previousElementSibling.value" class="btn btn-success btn-lg mx-auto d-block">Submit</button>
         </div>
     </main>
     <script>
@@ -43,6 +46,10 @@
         const Params = new URLSearchParams(new URL(window.location.href).search)
         if (Params.get('user')) {
             Submit(Params.get('user'))
+        }
+
+        if (window.location.hash === '#2024form') {
+            NewYearForm()
         }
 
         async function Submit(username) {
@@ -126,7 +133,7 @@
             <div class="card mb-3">
                 <div class="card-header">Basic Statistics</div>
                 <div class="card-body">
-                    <h3>At the end of 2023 you had..</h3>
+                    <h3>Going into the New Year..</h3>
                     <ul class="list-unstyled m-0">
                         <li>${i.placeVisits.toLocaleString()} Place Visits</li>
                         <li>${i.profileViews.toLocaleString()} Profile Views</li>
@@ -184,6 +191,14 @@
                 hours: Hours,
                 minutes: Minutes
             }
+        }
+
+        function NewYearForm() {
+            PageTitle.innerText = 'Polytoria Year in Review'
+            PageDesc.innerText = 'Submit this form to be signed up for your account to be recorded for Polytoria Year in Review 2024 (this is all just plans, no one can expect what happens this year)'
+            PageContent.innerHTML = `
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScdl1u8Bsnk7oO23Xvm0eidnizGHLYElOV-hsN3qj0we46l3A/viewform?embedded=true" width="640" height="686" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            `
         }
     </script>
   </body>
