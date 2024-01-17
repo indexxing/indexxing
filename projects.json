@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Sidebar Tools",
+        "desc": "Access information at a glance on your browser's sidebar!",
+        "path": "/sidebar-tools/"
+    },
+    {
+        "name": "Polytoria Year in Review",
+        "desc": "Get your Polytoria account's year in review for 2023!",
+        "path": "/polytoria-wrapped/"
+    },
+    {
+        "name": "Polytoria Account Level",
+        "desc": "Get your Polytoria account's level rating!",
+        "path": "/polytoria-level/"
+    }
+]

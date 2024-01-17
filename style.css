@@ -1,15 +1,33 @@
-main#page.small-page {
+/* MOBILE */
+@media only screen and (max-width: 830px) {
+    main#page.small-page {
+        width: initial !important;
+    }
+}
+
+main#page {
     margin-top: 50px;
     margin-bottom: 50px;
+    padding: 3rem;
+}
+
+main#page.small-page {
     width: 50%;
     display: block;
     margin-right: auto;
     margin-left: auto;
-    padding: 3rem;
 }
 
-#page-title {
+#page-title:not(:has(.page-title-accent)) {
     text-shadow: 0 4px 13px var(--page-accent);
+}
+
+#page-title .page-title-accent {
+    text-shadow: 0 4px 13px var(--page-accent);
+}
+
+#page-title.font-size-lg {
+    font-size: 7.5rem;
 }
 
 .avatar-image {
