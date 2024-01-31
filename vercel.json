@@ -1,0 +1,9 @@
+{
+    "redirects": [
+        {
+            "source": "/images/external/roblox-sing-along.png",
+            "destination": "/",
+            "permanent": true
+        }
+    ]
+}
