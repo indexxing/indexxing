@@ -29,12 +29,15 @@
         <h1 id="page-title">Polytoria Year in Review</h1>
         <p id="page-desc">Please enter your username below to generate your Polytoria Year in Review statistics.</p>
         <div role="alert" class="alert bg-danger">
-            <b>NEW (limited time January 8th 2024 -> January 30th 2024)!</b> Want to have your data properly recorded for 2024? Submit your username to <a onclick="NewYearForm()" style="text-decoration: underline; cursor: pointer;">this form</a>!
+            Want to have your data properly recorded for 2024? Submit your username to <a onclick="NewYearForm()" style="text-decoration: underline; cursor: pointer;">this form</a>!
         </div>
         <hr class="divider">
         <div id="page-content">
+            <!--
             <input type="text" class="form-control form-control-lg mb-2" placeholder="Username">
             <button onclick="window.location.href = window.location.href + '?user=' + this.previousElementSibling.value" class="btn btn-success btn-lg mx-auto d-block">Submit</button>
+            -->
+            Polytoria Year in Review has been disabled for now, until the end of 2024! The form for registering to be properly saved will still be available. If you submit the form with your username late, you will still be saved at the end of every month just you won't have the months you missed.
         </div>
     </main>
     <script>
@@ -53,6 +56,9 @@
         }
 
         async function Submit(username) {
+            alert('Polytoria Year in Review has been disabled, until the end of 2024! Go to the homepage for Polytoria Year in Review to learn more.')
+            window.location.href = window.location.href.replace('?user=' + Params.get('user'), '#2024form')
+            return;
             const UserID = await GetUserID(username)
             const i = await GetUserDetails(UserID)
             window.UserDetails = i
