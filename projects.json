@@ -2,16 +2,65 @@
     {
         "name": "Sidebar Tools",
         "desc": "Access information at a glance on your browser's sidebar!",
-        "path": "/sidebar-tools/"
+        "url": "/sidebar-tools/",
+        "development": "active",
+        "languages": "website",
+        "role": "creator"
     },
     {
         "name": "Polytoria Year in Review",
         "desc": "Get your Polytoria account's year in review for 2023!",
-        "path": "/polytoria-wrapped/"
+        "url": "/polytoria-wrapped/",
+        "development": "active",
+        "languages": "website",
+        "role": "creator"
     },
     {
         "name": "Polytoria Account Level",
         "desc": "Get your Polytoria account's level rating!",
-        "path": "/polytoria-level/"
+        "url": "/polytoria-level/",
+        "development": "static",
+        "languages": "website",
+        "role": "creator"
+    },
+    {
+        "name": "PolyVisual+",
+        "desc": "A block programming for Polytoria powered by Google Blockly. The page will generate you the result Lua file, just go ahead and code!",
+        "url": "https://polyvisual.vercel.app/",
+        "development": "paused",
+        "languages": "website",
+        "role": "fork"
+    },
+    {
+        "name": "PolyCode",
+        "desc": "Public list of pre-made scripts and tutorials for free and for use in all games!",
+        "url": "https://polycode.vercel.app/",
+        "development": "active",
+        "languages": "website,JSON",
+        "role": "creator"
+    },
+    {
+        "name": "Polytoria Counter",
+        "desc": "The best Polytoria counter website! (personal opinion)",
+        "url": "/polytoria-counter/",
+        "development": "inactive",
+        "languages": "website",
+        "role": "creator"
+    },
+    {
+        "name": "Polytoria Unofficial Scripting Docs",
+        "desc": "An improved version of the Polytoria Scripting API Documentation!",
+        "url": "https://github.com/StarManTheGamer/poly-newdocs",
+        "development": "active",
+        "languages": "website,Python",
+        "role": "contributor"
+    },
+    {
+        "name": "Click Me!",
+        "desc": "A Polytoria game about clicking the button.",
+        "url": "https://polytoria.com/places/2977",
+        "development": "inactive",
+        "languages": "Lua",
+        "role": "creator"
     }
 ]

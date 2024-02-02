@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta name="theme-color" content="red">
+    <meta name="color-scheme" content="red">
+    
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>gui</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="gui">
+    <meta name="description" content="gui">
+ 
+    <!-- CSS -->
+    <link rel="stylesheet" href="../style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+  </head>
+  <body>
+    <style>
+        .object {
+            min-width: 275px;
+            min-height: 50px;
+        }
+
+        .object-options {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            display: flex;
+        }
+
+        .drag-button {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .resize-button {
+            border-radius: 0px;
+        }
+    </style>
+    <div class="object draggable" style="/*8width: 200px; height: 100px;*/ border: 5px solid black; background: slategray;">
+        <div class="object-options">
+            <button class="btn btn-primary drag-button">Move</button>
+            <button class="btn btn-warning resize-button">Resize</button>
+        </div>
+        <span contenteditable="true">This is a label.</span>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
