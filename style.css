@@ -42,3 +42,18 @@ main#page.small-page {
     border-radius: 5px;
     padding-left: 10px;
 }
+
+small {
+    font-size: 0.8rem;
+    color: var(--bs-secondary-color) !important;
+}
+
+.list-card .card {
+    text-decoration: none;
+    transition: box-shadow 1s;
+}
+
+.list-card .card:hover {
+    box-shadow: 0 4px 20px 1px #007bff2e;
+    border-color: var(--blue);
+}
