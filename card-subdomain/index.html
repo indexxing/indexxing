@@ -11,7 +11,6 @@
     <meta name="description" content="what are my socials?">
  
     <!-- CSS -->
-    <link rel="stylesheet" href="/style.css" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
   
     <!-- JAVASCRIPT -->
@@ -24,14 +23,69 @@
             --bs-body-bg: black;
         }
 
-        .list-card .card:hover {
+        /* MOBILE */
+        @media only screen and (max-width: 830px) {
+            main#page.small-page {
+                width: initial !important;
+            }
+        }
+
+        main#page {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 3rem;
+        }
+
+        main#page.small-page {
+            width: 50%;
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #page-title:not(:has(.page-title-accent)) {
+            text-shadow: 0 4px 13px var(--page-accent);
+        }
+
+        #page-title .page-title-accent {
+            text-shadow: 0 4px 13px var(--page-accent);
+        }
+
+        #page-title.font-size-lg {
+            font-size: 7.5rem;
+        }
+
+        .avatar-image {
+            width: 100px;
+            border-radius: 100%;
+            background: #1a1a1a;
+            padding: 5px;
+        }
+
+        .text-quote {
+            border-left: 10px solid #1a1a1a;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+
+        small {
+            font-size: 0.8rem;
+            color: var(--bs-secondary-color) !important;
+        }
+
+        .list-card .card {
+            text-decoration: none;
             transition: box-shadow 1s;
+        }
+
+        .list-card .card:hover {
             box-shadow: 0 4px 20px 1px #007bff96;
+            border-color: var(--blue);
         }
     </style>
 
     <main id="page" class="container w-25 mx-auto p-5 text-center">
-        <h1>hey, i'm <span class="page-title-accent">Index</span></h1>
+        <h1 id="page-title">hey, i'm <span class="page-title-accent">Index</span></h1>
         <p>these are my socials.</p>
         <hr class="w-50 mx-auto">
         <ul class="list-unstyled">
