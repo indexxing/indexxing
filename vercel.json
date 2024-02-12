@@ -1,9 +1,10 @@
 {
+    "version": 2,
     "redirects": [
         {
-            "source": "polytoria-counter",
-            "destination": "projects/polytoria-counter",
-            "permanent": false
+            "source": "/polytoria-counter/",
+            "destination": "/projects/polytoria-counter/",
+            "permanent": true
         }
     ]
 }
