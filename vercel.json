@@ -1,9 +1,28 @@
 {
-    "version": 2,
     "redirects": [
+        {
+            "source": "/polytoria-wrapped/",
+            "destination": "/projects/polytoria-wrapped/",
+            "permanent": true
+        },
+        {
+            "source": "/polytoria-level/",
+            "destination": "/projects/polytoria-level/",
+            "permanent": true
+        },
         {
             "source": "/polytoria-counter/",
             "destination": "/projects/polytoria-counter/",
+            "permanent": true
+        },
+        {
+            "source": "/sidebar-tools/",
+            "destination": "/projects/sidebar-tools/",
+            "permanent": true
+        },
+        {
+            "source": "/gui/",
+            "destination": "/projects/gui/",
             "permanent": true
         }
     ]
