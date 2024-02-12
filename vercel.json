@@ -1,8 +1,8 @@
 {
     "redirects": [
         {
-            "source": "/polytoria-counter/",
-            "destination": "/projects/polytoria-counter/",
+            "source": "/polytoria-counter",
+            "destination": "/projects/polytoria-counter",
             "permanent": true
         }
     ]
