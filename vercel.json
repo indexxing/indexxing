@@ -3,7 +3,7 @@
         {
             "source": "/polytoria-counter",
             "destination": "/projects/polytoria-counter",
-            "permanent": true
+            "permanent": false
         }
     ]
 }
