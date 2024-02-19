@@ -157,6 +157,7 @@
                 const ProjectsListSide = document.getElementById('project-list-side-ul')
 
                 data.main.forEach(project => {
+                    if (project.url.startsWith('/')) { project.url = "/projects" + project.url }
                     const Li = document.createElement('li')
                     Li.classList = 'list-card'
                     Li.innerHTML = `
@@ -176,6 +177,7 @@
                 })
 
                 data.side.forEach(project => {
+                    if (project.url.startsWith('/')) { project.url = "/projects" + project.url }
                     const Li = document.createElement('li')
                     Li.classList = 'list-card'
                     Li.innerHTML = `
