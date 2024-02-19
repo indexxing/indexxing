@@ -1,6 +1,13 @@
 {
     "redirects": [
         {
+            "source": "/projects/",
+            "destination": "index.html/#projects",
+            "permanent": true
+        },
+
+
+        {
             "source": "/polytoria-wrapped/",
             "destination": "/projects/polytoria-wrapped/",
             "permanent": true

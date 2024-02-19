@@ -32,14 +32,14 @@ document.addEventListener('DOMContentLoaded', function(){
   
     function Update() {
       if (URLSections.length > 0) {
-        FullURL = `${window.location.origin}/sidebar-tools/view.html?viewType=${TypeInput.options[TypeInput.selectedIndex].value}&tools=${URLSections.join(',')}`
+        FullURL = `${window.location.origin}/projects/sidebar-tools/view.html?viewType=${TypeInput.options[TypeInput.selectedIndex].value}&tools=${URLSections.join(',')}`
         URLInput.value = FullURL
       } else {
         URLInput.value = 'At least 1 tool has to be selected!'
       }
   
       if (URLSections.length === Object.keys(Tools).length) {
-        FullURL = `${window.location.origin}/sidebar-tools/view.html?viewType=${TypeInput.options[TypeInput.selectedIndex].value}&tools=*`
+        FullURL = `${window.location.origin}/projects/sidebar-tools/view.html?viewType=${TypeInput.options[TypeInput.selectedIndex].value}&tools=*`
         URLInput.value = FullURL
       }
     }

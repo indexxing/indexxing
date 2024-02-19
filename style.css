@@ -5,13 +5,13 @@
     }
 }
 
-main#page {
+main#page, div#notice-page {
     margin-top: 50px;
     margin-bottom: 50px;
     padding: 3rem;
 }
 
-main#page.small-page {
+main#page.small-page, div#notice-page.small-page {
     width: 50%;
     display: block;
     margin-right: auto;

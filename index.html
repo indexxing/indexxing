@@ -30,6 +30,7 @@
             -webkit-text-stroke-width: 1px;
             font-family: sans-serif;
             font-size: 3rem;
+            text-shadow: 0 0 8px #3b3144;
         }
 
         .mobile-only {
@@ -72,18 +73,33 @@
     </style>
 
     <!-- PROJECT LIST MODAL -->
-    <div class="modal fade" id="project-list" tabindex="-1" aria-labelledby="project-list-title" aria-hidden="true">
+    <div class="modal fade" id="project-list-main" tabindex="-1" aria-labelledby="project-list-main-title" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="project-list-title">Project List</h1>
+              <h1 class="modal-title fs-5" id="project-list-main-title">Project List</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              Most of my projects are listed here!
-              <br>
-              <br>
-              <ul class="list-unstyled" id="project-list-ul"></ul>
+              Some of my projects that I personally like making or people like using are listed here!
+              <hr class="mb-2">
+              <small>DEVELOPMENT STATUS KEY</small>
+              <ul class="list-unstyled">
+                <li>
+                    <div class="project-development-tag development-active px-2">active</div> = development is active
+                </li>
+                <li>
+                    <div class="project-development-tag development-paused px-2">paused</div> = development is temporarily paused
+                </li>
+                <li>
+                    <div class="project-development-tag development-inactive px-2">active</div> = development is inactive for the forseeable future
+                </li>
+                <li>
+                    <div class="project-development-tag development-static px-2">static</div> = project is at a good state - no other ideas on what to add, change, and or fix
+                </li>
+              </ul>
+              <hr>
+              <ul class="list-unstyled" id="project-list-main-ul"></ul>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -91,6 +107,43 @@
           </div>
         </div>
     </div>
+
+    <!-- SIDE PROJECTS LIST MODAL -->
+    <div class="modal fade" id="project-list-side" tabindex="-1" aria-labelledby="project-list-side-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="project-list-side-title">Side Projects List</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              My side projects are usually hosted on this site and are made for fun when I'm bored!
+              <hr class="mb-2">
+              <small>DEVELOPMENT STATUS KEY</small>
+              <ul class="list-unstyled">
+                <li>
+                    <div class="project-development-tag development-active px-2">active</div> = development is active
+                </li>
+                <li>
+                    <div class="project-development-tag development-paused px-2">paused</div> = development is temporarily paused
+                </li>
+                <li>
+                    <div class="project-development-tag development-inactive px-2">active</div> = development is inactive for the forseeable future
+                </li>
+                <li>
+                    <div class="project-development-tag development-static px-2">static</div> = project is at a good state - no other ideas on what to add, change, and or fix
+                </li>
+              </ul>
+              <hr>
+              <ul class="list-unstyled" id="project-list-side-ul"></ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
     <script>
         fetch('projects.json')
             .then(response => {
@@ -100,9 +153,10 @@
                 return response.json()
             })
             .then(data => {
-                const ProjectsList = document.getElementById('project-list-ul')
+                const ProjectsListMain = document.getElementById('project-list-main-ul')
+                const ProjectsListSide = document.getElementById('project-list-side-ul')
 
-                data.forEach(project => {
+                data.main.forEach(project => {
                     const Li = document.createElement('li')
                     Li.classList = 'list-card'
                     Li.innerHTML = `
@@ -118,11 +172,34 @@
                         </div>
                     </a>
                     `
-                    ProjectsList.appendChild(Li)
+                    ProjectsListMain.appendChild(Li)
+                })
+
+                data.side.forEach(project => {
+                    const Li = document.createElement('li')
+                    Li.classList = 'list-card'
+                    Li.innerHTML = `
+                    <a href="${project.url}" class="text-reset text-decoration-none" target="_blank">
+                        <div class="card mb-3" style="--bs-card-bg: hsl(214.3deg 13.43% 12.57%);">
+                            <div class="card-body">
+                                <small class="text-muted mb-1">
+                                    <div class="project-development-tag development-${project.development} px-2">${project.development}</div> | ${project.role} | ${GetProjectLanguageList(project.languages).join(', ')}
+                                </small>
+                                <h3>${project.name}</h3>
+                                <p class="mb-0">${project.desc}</p>
+                            </div>    
+                        </div>
+                    </a>
+                    `
+                    ProjectsListSide.appendChild(Li)
                 })
 
                 if (window.location.hash === "#projects") {
-                    document.querySelector('a[href="#project-list"]').click()
+                    document.querySelector('a[href="#project-list-main"]').click()
+                }
+
+                if (window.location.hash === "#side-projects") {
+                    document.querySelector('a[href="#project-list-side"]').click()
                 }
             })
             .catch(error => {
@@ -149,7 +226,8 @@
         <div class="row">
             <div class="col">
                 <p class="text-muted mb-0">have a good day 👋</p>
-                <h1 id="page-title" class="font-size-lg">hey,<br>i'm <span class="page-title-accent">Index</span></h1>
+                <!-- thanks to https://github.com/sabrina-aip/spellcheck/blob/main/assets/styles/large_style.css#L111 - I don't know why my spellcheck underline wasn't working haha -->
+                <h1 id="page-title" class="font-size-lg" style="text-shadow: 0 0px 4px #fff;">hey,<br>i'm <span class="page-title-accent" style="text-decoration-line: wavy;text-decoration-line: underline;text-decoration-style: wavy;text-decoration-color: red;text-decoration-thickness: 2px;text-underline-offset: 10%;">Index</span></h1>
                 <a href="https://github.com/IndexingGitHub/" class="btn btn-dark" target="_blank" alt="Link to my GitHub profile. This website is in no way endorsed or affiliated with GitHub officially."><img src="/images/github-invertocat-white.svg" width="25"></a>
                 <div class="mobile-only">
                     <br>
@@ -160,7 +238,7 @@
                 <ul class="list-unstyled">
                     <li>
                         <h2 class="heading-outline">who am I?</h2>
-                        <p>hey! I'm Index. I'm learning web development.</p>
+                        <p>hey! I'm Index. I'd like to consider myself a frontend web developer.</p>
                     </li>
                     <li>
                         <h2 class="heading-outline">what do I know?</h2>
@@ -168,11 +246,16 @@
                     </li>
                     <li>
                         <h2 class="heading-outline">what do I want to learn?</h2>
-                        <p>I want to learn Godot and keep improving on my JAVASCRIPT skills.</p>
+                        <ul>
+                            <li>Godot (which includes the interface itself, C# and GDScript)</li>
+                            <li>XCode/Swift (in hopes to develop MacOS apps for myself for fun)</li>
+                            <li>Improving my existing JAVASCRIPT skills</li>
+                        </ul>
                     </li>
                     <li>
                         <h2 class="heading-outline">what am I working on?</h2>
-                        <p>You can find a full list of small projects that are hosted on this site <a href="#project-list" data-bs-toggle="modal">here</a>.</p>
+                        <p class="mb-0">You can find a list of my projects <a href="#project-list-main" data-bs-toggle="modal">here</a>!</p>
+                        <small>(you can also view my side projects <a href="#project-list-side" data-bs-toggle="modal">here</a>)</small>
                     </li>
                 </ul>
             </div>
