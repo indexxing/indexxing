@@ -1,25 +1,19 @@
 document.addEventListener('DOMContentLoaded', function(){
-    Array.from(document.getElementsByClassName('draggable')).forEach(element => {DragElement(element)})
+    Array.from(document.getElementsByClassName('draggable')).forEach(element => {InitializeElement(element)})
 });
 
-function DragElement(element) {
-    console.log('Started DragElement Function for ' + element)
+function InitializeElement(element) {
+    console.log('Started InitializeElement Function for ', element)
     element.style.position = 'absolute'
 
+    // Drag Button
     const DragButton = element.getElementsByClassName('drag-button')[0]
     let Dragging = false
-    DragButton.addEventListener('click', function(){
-        Dragging = true
-    });
-    document.addEventListener('mousedown', function(e){
+    DragButton.addEventListener('click', function(){ DisableObjectOptions(element); Dragging = true });
+
+    // Move Object when Dragging is Enabled
+    document.addEventListener('mousemove', function(e){
         if (Dragging === true) {
-            e.preventDefault()
-            Dragging = false
-        }
-    });
-    element.addEventListener('mousemove', function(e){
-        if (Dragging === true) {
-            console.log('Drag')
             e.preventDefault()
 
             element.style.top = (e.clientY-(element.offsetHeight/2))+'px';
@@ -27,19 +21,55 @@ function DragElement(element) {
         }
     });
 
+    // Resize
     const ResizeButton = element.getElementsByClassName('resize-button')[0]
     let Resizing = false
+    let ShowAlert = true
     ResizeButton.addEventListener('click', function(){
-        Resizing = !Resizing
-        if (Resizing === true) {
-            alert('Click the "Resize" button again to stop re-sizing.')
-            element.style.resize = 'both'
-            element.style.overflow = 'auto'
-            DragButton.disabled = 'true'
-        } else {
-            element.style.resize = 'none'
-            element.style.overflow = ''
-            DragButton.disabled = ''
+        DisableObjectOptions(element)
+        Resizing = true
+        if (ShowAlert === true) {
+            ShowAlert = false
         }
+        element.style.resize = 'both'
+        element.style.overflow = 'auto'
     });
+
+    // Delete
+    const DeleteButton = element.getElementsByClassName('delete-button')[0]
+    DeleteButton.addEventListener('click', function(){
+        element.remove()
+        console.log('Deleted element')
+    });
+    
+    // Finish
+    document.addEventListener('keyup', function(e){
+        e.preventDefault()
+        if (e.key === "Enter" && (Dragging === true || Resizing === true)) {
+            document.body.focus()
+            Dragging = false
+            Resizing = false
+            Finish(element)
+        }
+    })
+}
+
+function DisableObjectOptions(element) {
+    const Options = Array.from(element.getElementsByClassName('object-options')[0].children)
+    Options.forEach(option => {option.disabled = true})
+}
+
+function Finish(element) {
+    element.removeEventListener('keyup', Finish)
+
+    const Options = Array.from(element.getElementsByClassName('object-options')[0].children)
+
+    const DragButton = element.getElementsByClassName('drag-button')[0]
+    const ResizeButton = element.getElementsByClassName('resize-button')[0]
+    const DeleteButton = element.getElementsByClassName('delete-button')[0]
+
+    element.style.resize = 'none'
+    element.style.overflow = ''
+
+    Options.forEach(option => {option.disabled = false})
 }

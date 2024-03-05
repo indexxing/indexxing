@@ -23,8 +23,7 @@
             --bs-body-bg: black;
         }
 
-        /* MOBILE */
-        @media only screen and (max-width: 830px) {
+        @media only screen and (max-width: 1310px) {
             main#page.small-page {
                 width: initial !important;
             }
@@ -89,12 +88,22 @@
     </style>
 
     <main id="page" class="container w-25 mx-auto p-5 text-center">
-        <h1 id="page-title">hey, i'm <span class="page-title-accent">Index</span></h1>
-        <p>these are my socials.</p>
+        <small class="text-muted"><a href="/" class="text-decoration-none"><- go back</a></small>
+        <h1 id="page-title" style="font-size: 2.5rem;">hey, i'm <span class="page-title-accent">Index</span></h1>
+        <p>these are my socials :&#41;</p>
         <hr class="w-50 mx-auto">
+        <!-- I am not affiliated with any of these platforms officially - these are just my accounts on these platforms -->
         <ul class="list-unstyled">
             <li class="mb-3">
-                <a href="#" class="text-decoration-none text-reset list-card">
+                <a href="https://github.com/IndexingGitHub/" target="_blank" class="text-decoration-none text-reset list-card">
+                    <div class="card card-body">
+                        <small>GitHub</small>
+                        @IndexingGitHub
+                    </div>
+                </a>
+            </li>
+            <li class="mb-3">
+                <a onclick='alert("My Discord handle is \"index.lua\"!")' class="text-decoration-none text-reset list-card">
                     <div class="card card-body">
                         <small>Discord</small>
                         @index.lua
@@ -102,15 +111,29 @@
                 </a>
             </li>
             <li class="mb-3">
-                <a href="#" class="text-decoration-none text-reset list-card">
+                <a href="https://x.com/@in_d_ex0/" target="_blank" class="text-decoration-none text-reset list-card">
                     <div class="card card-body">
                         <small>X <i>(formerly Twitter)</i></small>
                         @in_d_ex0
                     </div>
                 </a>
             </li>
+            <li class="mb-3">
+                <a href="https://www.youtube.com/@indexcard" target="_blank" class="text-decoration-none text-reset list-card">
+                    <div class="card card-body">
+                        <small>YouTube</small>
+                        @indexcard
+                    </div>
+                </a>
+            </li>
         </ul>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script>
+        console.log(!window.location.hostname.startsWith('indexcard'))
+        console.log(window.location.hostname.includes('vercel'))
+        if (!window.location.hostname.startsWith('indexcard') && window.location.hostname.includes('vercel')) {
+            window.location.href = 'https://indexcard.vercel.app/'
+        }
+    </script>
   </body>
 </html>

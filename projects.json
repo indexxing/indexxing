@@ -17,9 +17,9 @@
             "role": "creator"
         },
         {
-            "name": "Polytoria Unofficial Scripting Docs",
-            "desc": "An improved version of the Polytoria Scripting API Documentation!",
-            "url": "https://github.com/StarManTheGamer/poly-newdocs",
+            "name": "Polytoria New Documentation",
+            "desc": "A reimagined documentation experience. Everything documented, everything organized, made by the community for the community - then made official.",
+            "url": "https://docs.polytoria.com/",
             "development": "active",
             "languages": "website,Python",
             "role": "contributor"

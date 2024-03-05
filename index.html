@@ -24,6 +24,12 @@
             --bs-body-bg: black;
         }
 
+        html, body {
+            height: 100%;
+            overflow-y: hidden;
+            background: radial-gradient(#000, #000, #000, #000, #000, #000, #000, #2a2929);
+        }
+
         .heading-outline {
             color: #111111;
             -webkit-text-stroke: #3b3144;
@@ -49,6 +55,10 @@
             .mobile-only {
                 display: block;
             }
+
+            .desktop-only {
+                display: none;
+            }
         }
 
         .heading-outline::selection {
@@ -70,6 +80,10 @@
         .project-development-tag.development-paused { background: gray; }
         .project-development-tag.development-inactive { background: red; }
         .project-development-tag.development-static { background: purple; }
+
+        .social-links .li {
+            display: inline;
+        }
     </style>
 
     <!-- PROJECT LIST MODAL -->
@@ -229,8 +243,45 @@
             <div class="col">
                 <p class="text-muted mb-0">have a good day 👋</p>
                 <!-- thanks to https://github.com/sabrina-aip/spellcheck/blob/main/assets/styles/large_style.css#L111 - I don't know why my spellcheck underline wasn't working haha -->
-                <h1 id="page-title" class="font-size-lg" style="text-shadow: 0 0px 4px #fff;">hey,<br>i'm <span class="page-title-accent" style="text-decoration-line: wavy;text-decoration-line: underline;text-decoration-style: wavy;text-decoration-color: red;text-decoration-thickness: 2px;text-underline-offset: 10%;">Index</span></h1>
-                <a href="https://github.com/IndexingGitHub/" class="btn btn-dark" target="_blank" alt="Link to my GitHub profile. This website is in no way endorsed or affiliated with GitHub officially."><img src="/images/github-invertocat-white.svg" width="25"></a>
+                <h1 id="page-title" class="font-size-lg" style="text-shadow: 0 0px 4px #fff;"><span class="desktop-only">hey, <br></span>i'm <span class="page-title-accent" style="text-decoration-line: wavy;text-decoration-line: underline;text-decoration-style: wavy;text-decoration-color: red;text-decoration-thickness: 2px;text-underline-offset: 10%;">Index</span></h1>
+                
+                <!--
+                <div class="row mb-2">
+                    <div class="col">
+                        <a href="https://github.com/IndexingGitHub/" class="btn btn-dark w-100" target="_blank" alt="Link to my GitHub profile. This website is in no way endorsed or affiliated with GitHub officially."><!--<img src="/images/github-invertocat-white.svg" width="25"> github</a>
+                    </div>
+                    <div class="col">
+                        <a onclick='alert("My Discord handle is \"index.lua\"!")' class="btn btn-primary w-100" target="_blank" alt="Link to my Discord profile. This website is in no way endorsed or affiliated with Discord officially.">discord</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a href="https://x.com/@in_d_ex0/" class="btn btn-info w-100" target="_blank" alt="Link to my Twitter profile. This website is in no way endorsed or affiliated with X officially.">X (formerly Twitter)</a>
+                    </div>
+                    <div class="col">
+                        <a href="https://www.youtube.com/@indexcard" class="btn btn-danger w-100" target="_blank" alt="Link to my YouTube profile. This website is in no way endorsed or affiliated with YouTube officially.">youtube</a>
+                    </div>
+                </div>
+                -->
+
+                <ul class="list-unstyled">
+                    <li class="mb-1">
+                        <a href="https://github.com/IndexingGitHub/" class="btn btn-dark w-25" target="_blank" alt="Link to my GitHub profile. This website is in no way endorsed or affiliated with GitHub officially."><!--<img src="/images/github-invertocat-white.svg" width="25">--> GitHub</a>
+                    </li>
+                    <li class="mb-1">
+                        <a onclick='alert("My Discord handle is \"index.lua\"!")' class="btn btn-dark w-25" target="_blank" alt="Link to my Discord profile. This website is in no way endorsed or affiliated with Discord officially.">Discord</a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="https://x.com/@in_d_ex0/" class="btn btn-dark w-25" target="_blank" alt="Link to my Twitter profile. This website is in no way endorsed or affiliated with X officially.">X (formerly Twitter)</a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="https://www.youtube.com/@indexcard" class="btn btn-dark w-25" target="_blank" alt="Link to my YouTube profile. This website is in no way endorsed or affiliated with YouTube officially.">YouTube</a>
+                    </li>
+                    <li>
+                        <small><a href="/socials/" class="text-muted">social links</a></small>
+                    </li>
+                </ul>
+
                 <div class="mobile-only">
                     <br>
                     <br>
@@ -238,20 +289,20 @@
             </div>
             <div class="col">
                 <ul class="list-unstyled">
-                    <li>
+                    <li class="mb-4">
                         <h2 class="heading-outline">who am I?</h2>
-                        <p>hey! I'm Index. I'd like to consider myself a frontend web developer.</p>
+                        <p>hey! I'm Index. I'd like to consider myself a frontend web developer :&#41;</p>
                     </li>
-                    <li>
+                    <li class="mb-4">
                         <h2 class="heading-outline">what do I know?</h2>
-                        <p>HTML5, CSS3, JAVASCRIPT, LUA</p>
+                        <p>I know HTML, CSS, JAVASCRIPT, LUA notably</p>
                     </li>
-                    <li>
+                    <li class="mb-4">
                         <h2 class="heading-outline">what do I want to learn?</h2>
                         <ul>
-                            <li>Godot (which includes the interface itself, C# and GDScript)</li>
-                            <li>XCode/Swift (in hopes to develop MacOS apps for myself for fun)</li>
-                            <li>Improving my existing JAVASCRIPT skills</li>
+                            <li>Godot (which includes the interface itself, C#, and GDScript)</li>
+                            <li>XCode / Swift (in hopes to develop MacOS apps for myself for fun)</li>
+                            <li>Tailwind CSS (in hopes to have more control over CSS without having to write CSS)</li>
                         </ul>
                     </li>
                     <li>

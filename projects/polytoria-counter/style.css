@@ -20,7 +20,7 @@ html, body {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
 
-#page::-webkit-scrollbar { /* WebKit */
+#page::-webkit-scrollbar {
   width: 0;
   height: 0;
 }

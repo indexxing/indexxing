@@ -18,7 +18,7 @@
   <body>
     <style>
         .object {
-            min-width: 275px;
+            min-width: 305px;
             min-height: 50px;
         }
 
@@ -30,21 +30,23 @@
             display: flex;
         }
 
-        .drag-button {
+        .object-options *:first-child {
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 0px;
         }
 
-        .resize-button {
+        .object-options *:not(:first-child) {
             border-radius: 0px;
         }
     </style>
-    <div class="object draggable" style="/*8width: 200px; height: 100px;*/ border: 5px solid black; background: slategray;">
+    <div data-class="" class="object draggable" style="/*8width: 200px; height: 100px;*/ border: 5px solid black; background: slategray;">
         <div class="object-options">
+            <button class="btn btn-info properties-button">Properties</button>
             <button class="btn btn-primary drag-button">Move</button>
             <button class="btn btn-warning resize-button">Resize</button>
+            <button class="btn btn-danger delete-button">Delete</button>
         </div>
         <span contenteditable="true">This is a label.</span>
     </div>
