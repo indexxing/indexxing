@@ -12,14 +12,22 @@
     <meta name="description" content="gui">
  
     <!-- RESOURCES -->
-    <link rel="stylesheet" href="../style.css" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
-  </head>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
   <body>
     <style>
+        html, body {
+            overflow: hidden;
+        }
+
         .object {
             min-width: 305px;
             min-height: 50px;
+        }
+
+        .object.selected {
+            border: 5px solid blue;
         }
 
         .object-options {
@@ -41,15 +49,59 @@
             border-radius: 0px;
         }
     </style>
-    <div data-class="" class="object draggable" style="/*8width: 200px; height: 100px;*/ border: 5px solid black; background: slategray;">
-        <div class="object-options">
-            <button class="btn btn-info properties-button">Properties</button>
-            <button class="btn btn-primary drag-button">Move</button>
-            <button class="btn btn-warning resize-button">Resize</button>
-            <button class="btn btn-danger delete-button">Delete</button>
+    <div class="row">
+        <div class="col-md-3" style="--bs-gutter-x: 0px;" id="sidebar">
+            <div class="card p-3 rounded-0" style="height: 100vh; z-index: 2000;">
+                <div class="card-body p-3">
+                    <small class="text-muted"><a href="/" class="text-decoration-none"><- go back</a></small>
+                    <h2>Project Name</h2>
+                    <p>This is an un-released project. It currently does not have a description.</p>
+                    <hr>
+                    <small class="text-muted">Actions</small>
+                    <ul class="list-unstyled">
+                        <li class="mb-1">
+                            <button class="btn btn-primary w-100" onclick="NewObject('UILabel')">New Object</button>
+                        </li>
+                        <li>
+                            <button class="btn btn-success w-100" disabled>Open Tutorial (coming soon)</button>
+                        </li>
+                    </ul>
+                    <hr>
+                    <small class="text-muted">Workspace Properties</small>
+                    <ul class="list-unstyled" id="workspace-properties">
+                        <li>Object Count: 1</li>
+                    </ul>
+                    <hr>
+                    <small class="text-muted">Object Properties</small>
+                    <div id="object-properties">
+                        No object selected.
+                    </div>
+                </div>
+            </div>
         </div>
-        <span contenteditable="true">This is a label.</span>
+        <div class="col" style="--bs-gutter-x: 0px;" id="workspace">
+            <div data-class="UILabel" class="object" style="border: 5px solid black; background: slategray;">
+                <div class="object-options">
+                    <button class="btn btn-primary drag-button"><i class="bx bx-move"></i></button>
+                    <button class="btn btn-warning resize-button"><i class="bx bx-expand"></i></button>
+                    <button class="btn btn-danger delete-button"><i class="bx bxs-trash-alt"></i></button>
+                </div>
+                <span contenteditable="true">This is a label.</span>
+            </div>
+        </div>
     </div>
+
+    <div id="object-templates" class="d-none" style="visibility: hidden;">
+        <div data-class="UILabel" class="object" style="border: 5px solid black; background: slategray;">
+            <div class="object-options">
+                <button class="btn btn-primary drag-button"><i class="bx bx-move"></i></button>
+                <button class="btn btn-warning resize-button"><i class="bx bx-expand"></i></button>
+                <button class="btn btn-danger delete-button"><i class="bx bxs-trash-alt"></i></button>
+            </div>
+            <span contenteditable="true">This is a label.</span>
+        </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
