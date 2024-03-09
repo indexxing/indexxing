@@ -41,6 +41,14 @@
             "role": "creator"
         },
         {
+            "name": "Operation: Sea Cleanup",
+            "desc": "A Polytoria game about cleaning the sea.",
+            "url": "https://polytoria.com/places/6012",
+            "development": "inactive",
+            "languages": "Lua",
+            "role": "creator"
+        },
+        {
             "name": "Click Me!",
             "desc": "A Polytoria game about clicking the button.",
             "url": "https://polytoria.com/places/2977",

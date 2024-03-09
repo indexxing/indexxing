@@ -24,11 +24,13 @@
             --bs-body-bg: black;
         }
 
+        /*
         html, body {
             height: 100%;
             overflow-y: hidden;
             background: radial-gradient(#000, #000, #000, #000, #000, #000, #000, #2a2929);
         }
+        */
 
         .heading-outline {
             color: #111111;
@@ -67,7 +69,7 @@
         }
 
         .project-development-tag {
-            /*width: 50px;*/
+            width: 60px;
             border-radius: 10rem;
             /*height: 7px;*/
             display: inline-block;
@@ -178,8 +180,15 @@
                     <a href="${project.url}" class="text-reset text-decoration-none" target="_blank">
                         <div class="card mb-3" style="--bs-card-bg: hsl(214.3deg 13.43% 12.57%);">
                             <div class="card-body">
+                                <!--
+                                <div class="row">
+                                    <div class="col"><div class="project-development-tag development-${project.development} px-2">${project.development}</div></div>
+                                    <div class="col">${project.role}</div>
+                                    <div class="col">${GetProjectLanguageList(project.languages).join(', ')}</div>
+                                </div>
+                                -->
                                 <small class="text-muted mb-1">
-                                    <div class="project-development-tag development-${project.development} px-2">${project.development}</div> | ${project.role} | ${GetProjectLanguageList(project.languages).join(', ')}
+                                    <div class="project-development-tag development-${project.development} px-2">${project.development}</div> | <div style="width: 65px; display: inline-block;">${project.role}</div> | ${GetProjectLanguageList(project.languages).join(', ')}
                                 </small>
                                 <h3>${project.name}</h3>
                                 <p class="mb-0">${project.desc}</p>
@@ -199,7 +208,7 @@
                         <div class="card mb-3" style="--bs-card-bg: hsl(214.3deg 13.43% 12.57%);">
                             <div class="card-body">
                                 <small class="text-muted mb-1">
-                                    <div class="project-development-tag development-${project.development} px-2">${project.development}</div> | ${project.role} | ${GetProjectLanguageList(project.languages).join(', ')}
+                                    <div class="project-development-tag development-${project.development} px-2">${project.development}</div> | <div style="width: 65px; display: inline-block;">${project.role}</div> | ${GetProjectLanguageList(project.languages).join(', ')}
                                 </small>
                                 <h3>${project.name}</h3>
                                 <p class="mb-0">${project.desc}</p>
@@ -256,7 +265,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <a href="https://x.com/@in_d_ex0/" class="btn btn-info w-100" target="_blank" alt="Link to my Twitter profile. This website is in no way endorsed or affiliated with X officially.">X (formerly Twitter)</a>
+                        <a href="https://x.com/@indexdev_/" class="btn btn-info w-100" target="_blank" alt="Link to my Twitter profile. This website is in no way endorsed or affiliated with X officially.">X (formerly Twitter)</a>
                     </div>
                     <div class="col">
                         <a href="https://www.youtube.com/@indexcard" class="btn btn-danger w-100" target="_blank" alt="Link to my YouTube profile. This website is in no way endorsed or affiliated with YouTube officially.">youtube</a>
@@ -272,7 +281,7 @@
                         <a onclick='alert("My Discord handle is \"index.lua\"!")' class="btn btn-dark w-25" target="_blank" alt="Link to my Discord profile. This website is in no way endorsed or affiliated with Discord officially.">Discord</a>
                     </li>
                     <li class="mb-1">
-                        <a href="https://x.com/@in_d_ex0/" class="btn btn-dark w-25" target="_blank" alt="Link to my Twitter profile. This website is in no way endorsed or affiliated with X officially.">X (formerly Twitter)</a>
+                        <a href="https://x.com/@indexdev_/" class="btn btn-dark w-25" target="_blank" alt="Link to my Twitter profile. This website is in no way endorsed or affiliated with X officially.">X (formerly Twitter)</a>
                     </li>
                     <li class="mb-1">
                         <a href="https://www.youtube.com/@indexcard" class="btn btn-dark w-25" target="_blank" alt="Link to my YouTube profile. This website is in no way endorsed or affiliated with YouTube officially.">YouTube</a>
