@@ -2,7 +2,7 @@
 
 hey! I'm Index. I'd like to consider myself a frontend web developer.
 
-my website: https://indexprojects.vercel.app/
+my website: https://indexx.vercel.app/
 
 my socials: https://indexcard.vercel.app/
 
