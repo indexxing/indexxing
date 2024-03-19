@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>01101001 01101110 01100100 01100101 01111000</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="What Awaits.. but more Questions">
+    <meta name="description" content="Quickly check someone's progress in Roblox's The Hunt: First Edition 2024 event! The hunt is waiting for it's next visitor.">
+ 
+    <!-- RESOURCES -->
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css">
+  </head>
+  <body>
+    <style>
+        :root {
+            --page-accent: #052792;
+        }
+
+        html, body { overflow: hidden; }
+
+        body {
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.2), 
+                rgba(0, 0, 0, 0.2)
+                ),
+                url('https://images.rbxcdn.com/5a8f60870bce0dad8fcb74aa8d19666d-the-hunt-1e-background.jpg');
+            background-size: cover;
+        }
+        
+        main#page {
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.5), 
+                rgba(0, 0, 0, 0.5)
+                ),
+                transparent;
+            height: 100vh;
+            margin-top: 0px;
+            padding-top: 12rem;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+            width: 100%;
+
+            font-size: 0.6rem;
+        }
+
+        footer a {
+            color: var(--bs-secondary-color) !important;
+            text-decoration-color: var(--bs-secondary);
+        }
+    </style>
+    <main id="page" class="small-page text-center">
+        <small class="text-muted"><a href="/" class="text-decoration-none"><- go back</a></small>
+        <h1 id="page-title">Metaverse Identifier</h1>
+        <p>Quickly check someone's progress in Roblox's The Hunt: First Edition 2024 event! (this is a work in progress project)</p>
+        <hr>
+        <div id="username">
+            <input type="text" class="form-control form-control-lg mb-3" placeholder="Username..">
+            <!--
+                <button class="btn btn-dark btn-lg" onclick="Submit(this.previousElementSibling.value)">identify</button>
+            -->
+            <button class="btn btn-success btn-lg" onclick="window.location.href = window.location.href + '?user=' + this.previousElementSibling.value">identify</button>
+        </div>
+        <div id="statistics"></div>
+
+        <footer>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="https://corsproxy.io/" target="_blank">https://corsproxy.io/ for CORS Requests</a>
+                </li>
+                <li>
+                    <a href="https://roblox.com/" target="_blank">Roblox Web APIs (usernames/users and badges/awarded-dates)</a>
+                </li>
+                <li>
+                    <a href="https://roblox.com/the-hunt/" target="_blank">Roblox "The Hunt" Background - removal if requested</a>
+                </li>
+                <li>
+                    I am <b>not</b> affiliated with Roblox in any way.
+                </li>
+            </ul>
+        </footer>
+    </main>
+
+    <script>
+        const URLParams = new URLSearchParams(window.location.search)
+
+        const UsernameDiv = document.getElementById('username')
+        const StatisticsDiv = document.getElementById('statistics')
+
+        const ProductionBadges = '494124218541104, 1627409032487035, 383372909061448, 2270812053326845, 2365638641421958, 2524484866295916, 4135484921332210, 274949934966548, 4365003461198636, 661345209724224, 1319345198887520, 2405390101523433, 1297845549260160, 4471605369851248, 1294433313993410, 4458952072692430, 2204025041316467, 1365388696519737, 3604048216530746, 1006778307344708, 3462052376214650, 343455186930821, 134094038834616, 3548895558816086, 1040006371199126, 4161247087578467, 3890165791787164, 2583617475301475, 4348432740950988, 1248156187701730, 984962670920392, 2550078020756721, 1944624489758435, 1554247241410455, 2659970340026923, 2291772724254521, 1058787539781134, 2199979154597259, 2467952231976036, 2279144525349903, 403853366352411, 3038128691832836, 3287120475581904, 2530119448030987, 752494343136655, 1491637208006345, 2759322967534820, 2074373309825993, 91625828906504, 3323495840863977, 1988856830053956, 3610545440246446, 3644597344186631, 4170073808242991, 3907198305582616, 3310494142087904, 1444633010134285, 3746510072228231, 3491459325032795, 3189151177666639, 222984738107196, 1052929021736324, 977080744089986, 3454897142623403, 3973768407427753, 2844222768557843, 3343479586894918, 134181817607278, 3889590126352151, 1968121496024382, 1195935784919838, 3183430629084179, 2126304292, 2858067043515256, 363014879883870, 326973416221376, 3712682348791593, 2820172087409351, 1058253836632411, 2676085241436003, 1832660142626803, 1619180517680517, 1450333031867445, 1700770216759129, 1649143115111218, 697214652468022, 2799462321324393, 2919630202517155, 3600048773691028, 1929474479015752, 4417973491171074, 3165988561890156, 286340036168649, 2131510390543294, 546555632944216, 3942882097917743, 4304154751188194, 2212320827432860, 3382555369617502'
+
+        let LocalCache = JSON.parse(window.localStorage.getItem('mid-users')) || {}
+
+        async function Submit(username) {
+            let UserID;
+            let Badges;
+            
+            if (LocalCache[username] !== undefined) {
+                UserID = LocalCache[username].id
+                Badges = LocalCache[username].badges
+            } else {
+                UserID = await GetUserID(username)
+                if (UserID === null) {
+                    Swal.fire({
+                        title: "No users Found!",
+                        text: "No users were found under that username. Please try again.",
+                        color: "red",
+                        background: "black",
+                        toast: true,
+                        position: "top-start",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                    return
+                }
+
+                Badges = await GetAwardedBadges(UserID)
+                if (Badges.result.length === 0) {
+                    Swal.fire({
+                        title: "This user hasn't participated!",
+                        text: "The specified user has 0 badges in The Hunt.",
+                        toast: true,
+                        position: "top-start",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                }
+            }
+
+            LocalCache[username] = {
+                id: UserID,
+                badges: Badges,
+                requested: new Date()
+            }
+            window.localStorage.setItem('mid-users', JSON.stringify(LocalCache))
+            LocalCache = JSON.parse(window.localStorage.getItem('mid-users'))
+
+            UsernameDiv.style.display = 'none' 
+            StatisticsDiv.innerHTML = `
+            <div class="row">
+                <div class="col">
+                    <small class="text-uppercase">Completed?</small>
+                    <h2>${ (Badges.result.length >= 95) ? 'Yes' : `No (>=${95 - Badges.result.length} left)` }</h2>
+                </div>
+                <div class="col">
+                    <small class="text-uppercase">Badges</small>
+                    <h2>${Badges.result.length}</h2>
+                </div>
+                <div class="col">
+                    <small class="text-uppercase">Time Spent</small>
+                    <h2>coming soon</h2>
+                </div>
+            </div>
+            `
+            StatisticsDiv.style.display = 'block'
+        }
+
+        function GetUserID(username, callback) {
+            return fetch('https://corsproxy.io/?' + encodeURIComponent('https://users.roblox.com/v1/usernames/users'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "usernames": [
+                        username
+                    ],
+                    "excludeBannedUsers": true
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    if (data.data[0] !== undefined) {
+                        return data.data[0].id
+                    }
+                    return null
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: "Error getting User ID",
+                        text: "There was a HTTP error while trying to get the user ID for the specified username. Please try again.",
+                        color: "red",
+                        background: "black",
+                        toast: true,
+                        position: "top-start",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                    console.log(error)
+                });
+        }
+
+        function GetAwardedBadges(userID, callback) {
+            return fetch('https://corsproxy.io/?' + encodeURIComponent(`https://badges.roblox.com/v1/users/${userID}/badges/awarded-dates?badgeIds=${ProductionBadges.replaceAll(' ', '+')}`))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return {
+                        result: data.data,
+                        sorted: data.data.toSorted((a, b) => new Date(b.awardedDate) - new Date(a.awardedDate))
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: "Error getting Awarded Badges",
+                        text: "There was a HTTP error while trying to get the users' awarded badges. Please try again.",
+                        color: "red",
+                        background: "black",
+                        toast: true,
+                        position: "top-start",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                    console.log(error)
+                });
+        }
+
+        if (URLParams.get('user')) {
+            Submit(URLParams.get('user'))
+        }
+    </script>
+  </body>
+</html>

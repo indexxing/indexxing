@@ -67,10 +67,18 @@
     ],
     "side": [
         {
+            "name": "Metaverse Identifier",
+            "desc": "Quickly check someone's progress in Roblox's The Hunt: First Edition 2024 event! The hunt is waiting for it's next visitor.",
+            "url": "/metaverse-identifier/",
+            "development": "active",
+            "languages": "website",
+            "role": "creator"
+        },
+        {
             "name": "Polytoria Year in Review",
             "desc": "Get your Polytoria account's year in review for 2023!",
             "url": "/polytoria-wrapped/",
-            "development": "active",
+            "development": "static",
             "languages": "website",
             "role": "creator"
         },

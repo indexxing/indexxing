@@ -5,6 +5,11 @@
             "destination": "index.html/#projects",
             "permanent": true
         },
+        {
+            "source": "/side-projects/",
+            "destination": "index.html/#side-projects",
+            "permanent": true
+        },
 
 
         {
@@ -30,6 +35,11 @@
         {
             "source": "/gui/",
             "destination": "/projects/gui/",
+            "permanent": true
+        },
+        {
+            "source": "/projects/mid/",
+            "destination": "/projects/metaverse-identifier/",
             "permanent": true
         }
     ]
