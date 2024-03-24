@@ -64,31 +64,29 @@
         }
     </style>
     <main id="page" class="small-page text-center">
-        <small class="text-muted"><a href="/" class="text-decoration-none"><- go back</a> | <a onclick="window.location.href = window.location.href.replace('?user=' + URLParams.get('user'), '')" class="text-decoration-none">another user</a></small>
+        <small class="text-muted"><a href="/" class="text-decoration-none"><- go back</a> | <a onclick="window.location.href = window.location.origin + window.location.pathname" class="text-decoration-none" style="cursor: pointer;">another user</a></small>
         <h1 id="page-title">Metaverse Identifier</h1>
-        <p>Quickly check someone's progress in Roblox's The Hunt: First Edition 2024 event! (this is a work in progress project)</p>
+        <p id="page-desc">Quickly check someone's progress in Roblox's The Hunt: First Edition 2024 event! (this is a work in progress project)</p>
         <hr>
         <div id="username">
             <input type="text" class="form-control form-control-lg mb-3" placeholder="Username..">
-            <button class="btn btn-success btn-lg" onclick="window.location.href = window.location.href + '?user=' + this.previousElementSibling.value">identify</button>
+            <button class="btn btn-success btn-lg" onclick="Submit(this.previousElementSibling.value)">identify</button>
         </div>
         <div id="statistics"></div>
 
         <footer>
-            <ul class="list-unstyled">
-                <li>
-                    <a href="https://corsproxy.io/" target="_blank">https://corsproxy.io/ for CORS Requests</a>
+            <ul class="list-unstyled mb-0">
+                <li class="mb-2">
+                    <a class="text-danger text-decoration-none" style="cursor: pointer;" onclick="if ( confirm('Are you sure you\'d like to clear the local cache?') === true ) { window.localStorage.removeItem('mid-users'); alert('Successfully cleared local cache'); window.location.reload() }">Clear Cache</a>
                 </li>
                 <li>
-                    <a href="https://roblox.com/" target="_blank">Roblox Web APIs (usernames/users, badges/awarded-dates, and badge info APIs)</a>
+                    <a href="https://corsproxy.io/" target="_blank">https://corsproxy.io/</a> and <a href="https://allorigins.win/" target="_blank">https://allorigins.win/</a> for CORS Requests Proxies
                 </li>
                 <li>
                     <a href="https://roblox.com/the-hunt/" target="_blank">Roblox "The Hunt" Background - removal if requested</a>
                 </li>
-                <li>
-                    I am <b>not</b> affiliated with Roblox in any way.
-                </li>
             </ul>
+            <small>I am <b>not</b> affiliated with Roblox in any way.</small>
         </footer>
     </main>
 
@@ -100,10 +98,17 @@
 
         const URLParams = new URLSearchParams(window.location.search)
 
+        const PageTitle = document.getElementById('page-title')
+        const PageDesc = document.getElementById('page-desc')
         const UsernameDiv = document.getElementById('username')
         const StatisticsDiv = document.getElementById('statistics')
 
         const ProductionBadges = '494124218541104, 1627409032487035, 383372909061448, 2270812053326845, 2365638641421958, 2524484866295916, 4135484921332210, 274949934966548, 4365003461198636, 661345209724224, 1319345198887520, 2405390101523433, 1297845549260160, 4471605369851248, 1294433313993410, 4458952072692430, 2204025041316467, 1365388696519737, 3604048216530746, 1006778307344708, 3462052376214650, 343455186930821, 134094038834616, 3548895558816086, 1040006371199126, 4161247087578467, 3890165791787164, 2583617475301475, 4348432740950988, 1248156187701730, 984962670920392, 2550078020756721, 1944624489758435, 1554247241410455, 2659970340026923, 2291772724254521, 1058787539781134, 2199979154597259, 2467952231976036, 2279144525349903, 403853366352411, 3038128691832836, 3287120475581904, 2530119448030987, 752494343136655, 1491637208006345, 2759322967534820, 2074373309825993, 91625828906504, 3323495840863977, 1988856830053956, 3610545440246446, 3644597344186631, 4170073808242991, 3907198305582616, 3310494142087904, 1444633010134285, 3746510072228231, 3491459325032795, 3189151177666639, 222984738107196, 1052929021736324, 977080744089986, 3454897142623403, 3973768407427753, 2844222768557843, 3343479586894918, 134181817607278, 3889590126352151, 1968121496024382, 1195935784919838, 3183430629084179, 2126304292, 2858067043515256, 363014879883870, 326973416221376, 3712682348791593, 2820172087409351, 1058253836632411, 2676085241436003, 1832660142626803, 1619180517680517, 1450333031867445, 1700770216759129, 1649143115111218, 697214652468022, 2799462321324393, 2919630202517155, 3600048773691028, 1929474479015752, 4417973491171074, 3165988561890156, 286340036168649, 2131510390543294, 546555632944216, 3942882097917743, 4304154751188194, 2212320827432860, 3382555369617502'
+        const BadgeRequestURL = {
+            corsProxy: "api.allorigins.win",
+            requestURL: "https://badges.roblox.com/v1/users/:ID/badges/awarded-dates?badgeIds=",
+            badgeIDs: ProductionBadges.replaceAll(' ', '+')
+        }
 
         let Badges;
         let LocalCache = JSON.parse(window.localStorage.getItem('mid-users')) || {}
@@ -115,15 +120,22 @@
             if (LocalCache[username] !== undefined) {
                 console.log('Cache Exists')
 
-                if (1 === 1) {
+                const Today = new Date()
+                const Requested = new Date(LocalCache[username].requested)
+                if (Requested.getDate() === Today.getDate() && Requested.getMonth() === Today.getMonth()) {
+                    console.log('Using Cached Info')
                     UserID = LocalCache[username].id
                     Badges = LocalCache[username].badges
                     Cached = true
+                } else {
+                    console.log('Ignoring Old Cached Info')
                 }
             }
 
             if (Cached === false || URLParams.get('cache') === "false") {
-                UserID = await GetUserID(username)
+                const UserDetails = await GetUserID(username)
+                UserID = UserDetails.id
+                username = UserDetails.username
                 if (UserID === null) {
                     Swal.fire({
                         title: "No users Found!",
@@ -152,44 +164,64 @@
                     })
                 }
 
-                Badges.first = await GetBadgeDetails(Badges.sorted[Badges.result.length - 1].badgeId);
-                Badges.recent = await GetBadgeDetails(Badges.sorted[0].badgeId);
+                const FirstBadge = Badges.sorted[Badges.result.length - 1]
+                const RecentBadge = Badges.sorted[0]
+
+                Badges.first = await GetBadgeDetails(FirstBadge.badgeId);
+                Badges.recent = await GetBadgeDetails(RecentBadge.badgeId);
+
+                const FirstBadgeDate = new Date(FirstBadge.awardedDate)
+                Badges.first.dateText = `${ ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"][FirstBadgeDate.getMonth()] } - ${ ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][FirstBadgeDate.getDay()] } ${ FirstBadgeDate.getDate() }, ${ FirstBadgeDate.getFullYear() }`
+                
+                const RecentBadgeDate = new Date(RecentBadge.awardedDate)
+                Badges.recent.dateText = `${ ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"][RecentBadgeDate.getMonth()] } - ${ ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][RecentBadgeDate.getDay()] } ${ RecentBadgeDate.getDate() }, ${ RecentBadgeDate.getFullYear() }`
             }
 
-            // disabled IF statement, will still cache to localStorage if cache is disabled but won't load from
-            if (URLParams.get('cache') !== "false" || 1 === 1) {
-                LocalCache[username] = {
-                    id: UserID,
-                    badges: Badges,
-                    requested: new Date()
-                }
-                window.localStorage.setItem('mid-users', JSON.stringify(LocalCache))
-                LocalCache = JSON.parse(window.localStorage.getItem('mid-users'))
+            LocalCache[username] = {
+                id: UserID,
+                badges: Badges,
+                requested: new Date().getTime()
             }
+            window.localStorage.setItem('mid-users', JSON.stringify(LocalCache))
+            LocalCache = JSON.parse(window.localStorage.getItem('mid-users'))
+
+            // Add 1 to badge count due to a badge being removed
+            const BadgeCount = (Badges.result.length + 1)
 
             UsernameDiv.style.display = 'none' 
+            // may add "time taken to complete" statistic soon
             StatisticsDiv.innerHTML = `
-            <div class="row">
+            <div class="row" style="font-size: 0.8rem;">
                 <div class="col">
-                    <small class="text-uppercase">Completed? ${ (Badges.result.length < 95) ? '(' + (95 - Badges.result.length) + ' until Min. Completion)' : '<br>' }</small>
+                    <small class="text-uppercase">Completed ${ (BadgeCount< 95) ? '? (' + (95 - BadgeCount) + ' until Min. Completion)' : '<br>The Hunt?' }</small>
                 </div>
                 <div class="col">
-                    <small class="text-uppercase">Badges<br>Completed</small>
+                    <small class="text-uppercase">Legendary<br>Hunter?</small>
                 </div>
+                <div class="col">
+                    <small class="text-uppercase">Badges<br>Earned</small>
+                </div>
+                ${ (BadgeCount < 95) ? `
                 <div class="col">
                     <small class="text-uppercase">Est. Badges per Day until Min. Completion</small>
                 </div>
+                ` : '' }
             </div>
             <div class="row mb-4">
                 <div class="col">
-                    <h2>${ (Badges.result.length >= 95) ? 'Yes' : 'No' }</h2>
+                    <h2>${ (BadgeCount >= 95) ? 'Yes' : 'No' }</h2>
                 </div>
                 <div class="col">
-                    <h2>${Badges.result.length}</h2>
+                    <h2>${ (BadgeCount === 99) ? 'Yes': 'No' }</h2>
                 </div>
                 <div class="col">
-                    <h2>${((95 - Badges.result.length) / GetDateDistance(new Date(), EndOfEvent)).toFixed(1)} badges</h2>
+                    <h2>${BadgeCount}</h2>
                 </div>
+                ${ (BadgeCount < 95) ? `
+                <div class="col">
+                    <h2>${Math.round((95 - BadgeCount) / GetDateDistance(new Date(), EndOfEvent))} badges</h2>
+                </div>
+                ` : '' }
             </div>
 
             <div class="row">
@@ -197,8 +229,8 @@
                     <div class="card w-100">
                         <div class="card-header">First Badge</div>
                         <div class="card-body">
-                            <a href="${`https://www.roblox.com/badges/${Badges.first.id}/a`}" class="text-decoration-none text-truncate d-block" target="_blank"><h5>${Badges.first.name}</h5></a>
-                            <a href="${`https://www.roblox.com/games/${Badges.first.awardingUniverse.rootPlaceId}/a`}" class="text-decoration-none text-truncate d-block" target="_blank">${Badges.first.awardingUniverse.name}</a>
+                            <a href="${`https://www.roblox.com/games/${Badges.first.awardingUniverse.rootPlaceId}/a`}" class="text-decoration-none text-truncate d-block" target="_blank"><h5>${Badges.first.awardingUniverse.name}</h5></a>
+                            ${Badges.first.dateText}
                         </div>
                     </div>
                 </div>
@@ -206,13 +238,15 @@
                     <div class="card w-100">
                         <div class="card-header">Most Recent Badge</div>
                         <div class="card-body">
-                            <a href="${`https://www.roblox.com/badges/${Badges.recent.id}/a`}" class="text-decoration-none text-truncate d-block" target="_blank"><h5>${Badges.recent.name}</h5></a>
-                            <a href="${`https://www.roblox.com/games/${Badges.recent.awardingUniverse.rootPlaceId}/a`}" class="text-decoration-none text-truncate d-block" target="_blank">${Badges.recent.awardingUniverse.name}</a>
+                            <a href="${`https://www.roblox.com/games/${Badges.recent.awardingUniverse.rootPlaceId}/a`}" class="text-decoration-none text-truncate d-block" target="_blank"><h5>${Badges.recent.awardingUniverse.name}</h5></a>
+                            ${Badges.recent.dateText}
                         </div>
                     </div>
                 </div> 
             </div>
             `
+            PageTitle.innerText = username + "'s Vault"
+            PageDesc.innerText = "Check out " + username + "'s progress on unlocking the Infinite Vault!"
             StatisticsDiv.style.display = 'block'
         }
 
@@ -237,7 +271,10 @@
                 })
                 .then(data => {
                     if (data.data[0] !== undefined) {
-                        return data.data[0].id
+                        return {
+                            id: data.data[0].id,
+                            username: data.data[0].name
+                        }
                     }
                     return null
                 })
@@ -258,7 +295,7 @@
         }
 
         function GetAwardedBadges(userID, callback) {
-            return fetch('https://corsproxy.io/?' + encodeURIComponent(`https://badges.roblox.com/v1/users/${userID}/badges/awarded-dates?badgeIds=${ProductionBadges.replaceAll(' ', '+')}`))
+            return fetch('https://api.allorigins.win/get?url=' + encodeURI('https://badges.roblox.com/v1/users/' + userID + '/badges/awarded-dates?badgeIds=' + ProductionBadges.replaceAll(' ', '+')))
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network not ok')
@@ -266,6 +303,7 @@
                     return response.json()
                 })
                 .then(data => {
+                    data = JSON.parse(data.contents)
                     return {
                         result: data.data,
                         sorted: data.data.toSorted((a, b) => new Date(b.awardedDate) - new Date(a.awardedDate))
@@ -320,6 +358,15 @@
 
         if (URLParams.get('user')) {
             Submit(URLParams.get('user'))
+        }
+
+        function CheckIfSameDay(day) {
+            const Today = new Date()
+            if (day.getDate() !== Today.getDate()) {
+                return false
+            } else {
+                return true
+            }
         }
     </script>
   </body>
