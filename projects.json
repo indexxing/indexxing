@@ -25,6 +25,14 @@
             "role": "contributor"
         },
         {
+            "name": "Polytoria Event Tracker",
+            "desc": "Quickly check someone's progress in Polytoria's on-going event! The hunt is waiting for it's next visitor.",
+            "url": "https://polytoria-event.vercel.app/",
+            "development": "active",
+            "languages": "website,NodeJS/ExpressJS,EJS",
+            "role": "creator"
+        },
+        {
             "name": "Sidebar Tools",
             "desc": "Access information at a glance on your browser's sidebar!",
             "url": "/sidebar-tools/",

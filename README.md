@@ -8,6 +8,6 @@ my socials: https://indexcard.vercel.app/
 
 ![My Skills](https://skillicons.dev/icons?i=html,css,js,lua,bootstrap,vscode,replit,discord,twitter)
 
-![My GitHub Statistics](https://myreadme.vercel.app/api/embed/IndexingGitHub?panels=userstatistics,toprepositories,toplanguages,commitgraph)
+![My GitHub Statistics](https://myreadme.vercel.app/api/embed/indexxing?panels=userstatistics,toprepositories,toplanguages,commitgraph)
 
 ![](https://komarev.com/ghpvc/?username=indexxing)
