@@ -1,3 +1,7 @@
+/*
+  - MAYBE ADD AUTO REFRESHING FOR COUNTERS AND STATISTICS
+*/
+
 document.addEventListener('DOMContentLoaded', function(){
   Array.from(document.getElementById('sidebar-nav').children).forEach(element => {
     if (element.getAttribute('data-pathname') === window.location.pathname) {
@@ -11,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function(){
   LoadUsers();
   LoadPlaces();
   LoadGuilds();
+  LoadAssets();
   document.body.style.filter = ''
 });
 
@@ -58,10 +63,10 @@ function LoadUsers() {
         <small>#${user.id} | ${new Date(user.registeredAt).toLocaleString()}</small>
         `
         List.appendChild(Column)
-        setTimeout(function () {
-          document.getElementById('loadUsersBtn').removeAttribute('disabled')
-        }, 1250)
       });
+      setTimeout(function () {
+        document.getElementById('loadUsersBtn').removeAttribute('disabled')
+      }, 1250)
     })
     .catch(error => console.error(error));
 }
@@ -97,10 +102,10 @@ function LoadPlaces() {
         "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/places/${game.id}" target="_blank">${game.name}</a></h3>
         `
         List.appendChild(Column)
-        setTimeout(function () {
-          document.getElementById('loadPlacesBtn').removeAttribute('disabled')
-        }, 1250)
       });
+      setTimeout(function () {
+        document.getElementById('loadPlacesBtn').removeAttribute('disabled')
+      }, 1250)
     })
     .catch(error => console.error(error));
 }
@@ -141,22 +146,49 @@ function LoadGuilds() {
         "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/guild/${guild.id}" target="_blank">${guild.name}</a></h3>
         `
         List.appendChild(Column)
-        setTimeout(function () {
-          document.getElementById('loadGuildsBtn').removeAttribute('disabled')
-        }, 1250)
       });
+      setTimeout(function () {
+        document.getElementById('loadGuildsBtn').removeAttribute('disabled')
+      }, 1250)
     })
     .catch(error => console.error(error));
 }
 
 function LoadAssets() {
-  fetch('https://api.polytoria.com/v1/store/?types[]=shirt&types[]=pants&types[]=tool&types[]=tshirt&types[]=pack&types[]=head&types[]=face&types[]=hat&page=1&limit=1&sort=createdAt')
+  fetch('https://api.polytoria.com/v1/store/?types[]=shirt&types[]=pants&types[]=tool&types[]=head&types[]=face&types[]=hat&page=1&limit=3&sort=createdAt')
     .then(response => response.json())
     .then(data_item => {
       data_item = data_item.assets
       document.getElementById('loadAssetsBtn').setAttribute('disabled', true)
       document.getElementById('itemCountTotal').innerText = (data_item[0].id).toLocaleString()
-      fetch('https://api.polytoria.com/v1/store/?types[]=decal&types[]=audio&types[]=model&types[]=mesh&page=1&limit=1&sort=createdAt')
+
+      let List = document.getElementById('assetCountList')
+      if (List.children.length > 0) {Array.from(List.children).forEach(element => {element.remove();})}
+
+      data_item.forEach((item, index) => {
+        // in reality it's 3 but because javascript it's 2
+        if (index > 2) {
+          return
+        }
+        let Column = document.createElement('div')
+        Column.classList = 'col-auto'
+        Column.innerHTML = `
+        <img src="${item.thumbnail}" width="175" height="175" class="img-fluid img-rounded">
+        <br>
+        <h4 style="
+          white-space: pre;
+          width: 275px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          height: 35px;
+          margin-top: 10px;
+          margin-bottom: 0px;
+        "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/store/${item.id}" target="_blank">${item.name}</a> by <a class="link-reset" href="https://polytoria.com/users/${item.creator.id}" target="_blank">${item.creator.name}</h3>
+        `
+        List.appendChild(Column)
+      })
+
+      fetch('https://api.polytoria.com/v1/store/?types[]=decal&types[]=audio&types[]=mesh&page=1&limit=1&sort=createdAt')
         .then(response => response.json())
         .then(data_asset => {
           data_asset = data_asset.assets
@@ -165,11 +197,12 @@ function LoadAssets() {
 
           document.getElementById('itemCountPercent').innerText = Math.round(100 * data_item[0].id / (data_item[0].id + data_asset[0].id))
           document.getElementById('assetCountPercent').innerText = Math.round(100 * data_asset[0].id / (data_asset[0].id + data_item[0].id))
-          setTimeout(function () {
-            document.getElementById('loadAssetsBtn').removeAttribute('disabled')
-          }, 1250)
         })
         .catch(error => console.error(error));
+
+      setTimeout(function () {
+        document.getElementById('loadAssetsBtn').removeAttribute('disabled')
+      }, 1250)
     })
     .catch(error => console.error(error));
 }

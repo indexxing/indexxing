@@ -1,3 +1,9 @@
+/*
+    IDEAS FOR STATISTICS:
+    - preferred time of day
+    - percentage decrease from last month
+*/
+
 const Page = document.getElementById('page')
 const Data = document.getElementById('data')
 const YearDropdown = document.getElementById('year-dropdown')
@@ -274,14 +280,13 @@ function Load(data) {
         }
     )
 
-    let PastMonths = MonthsOfTheYear.filter((x, index) => new Date().getMonth() >= index)
-    console.log(PastMonths)
+    let PastMonths = MonthsOfTheYear.filter((x, index) => new Date().getMonth() >= index || new Date().getFullYear() > Year)
     new Chart(
         document.getElementById('months-of-the-year'),
         {
             type: 'bar',
             data: {
-                labels: PastMonths.map((x, index) => x.month + ` ${ (index === new Date().getMonth()) ? '(ongoing)' : '(past)' }`),
+                labels: PastMonths.map((x, index) => x.month + ` ${ (index === new Date().getMonth() && Year === new Date().getFullYear()) ? '(ongoing)' : '' }`),
                 datasets: [
                     {
                         label: "Song Plays",
@@ -368,5 +373,5 @@ function ResetVariables() {
 }
 
 function FormatDateObject(dateObject) {
-    return `${MonthsOfTheYear[dateObject.getMonth()].month} ${dateObject.getDay()}, ${dateObject.getFullYear()}`
+    return `${MonthsOfTheYear[dateObject.getMonth()].month} ${dateObject.getDate()}, ${dateObject.getFullYear()}`
 }
