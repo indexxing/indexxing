@@ -143,7 +143,7 @@ function LoadGuilds() {
           height: 35px;
           margin-top: 10px;
           margin-bottom: 0px;
-        "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/guild/${guild.id}" target="_blank">${guild.name}</a></h3>
+        "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/guilds/${guild.id}" target="_blank">${guild.name}</a></h3>
         `
         List.appendChild(Column)
       });
