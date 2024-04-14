@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>Bloxtopia</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="Polytoria Profile Wayback">
+    <meta name="description" content="See your Polytoria account's profile stylized to past iterations of the Polytoria site!">
+ 
+    <!-- RESOURCES -->
+    <link rel="stylesheet" href="Bloxtopia-CSS.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round:300,400,500,700" rel="stylesheet">
+  </head>
+  <body>
+    <style>
+        body {
+            font-family: 'Varela Round', sans-serif;
+        }
+
+        .box[onclick]:hover {
+            cursor: pointer;
+        }
+
+        .badge {
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 48px;
+            width: 48px;
+
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge.badge-lv-1 {
+            background-position: 0 0;
+        }
+
+        .badge.badge-lv-2 {
+            background-position: -49px 0;
+        }
+
+        .badge.badge-lv-3 {
+            background-position: -98px 0;
+        }
+
+        .badge.badge-lv-4 {
+            background-position: -147px 0;
+        }
+    </style>
+    <main id="page-content"></main>
+    <script>
+        const PageContent = $('#page-content')
+        let UserID = null
+
+        const Params = new URLSearchParams(new URL(window.location.href).search)
+        if (Params.get('user')) {
+            Submit(Params.get('user'))
+        }
+
+        async function Submit(username) {
+            UserID = await GetUserID(username)
+            const i = await GetUserDetails(UserID)
+
+            if (UserID === 'ERROR' || i === 'ERROR') {
+                alert('No account found associated with that username. Please make sure you entered the correct username and try again.')
+                return
+            }
+
+            const Badges = (await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/badges')).json()).badges
+            const ProfileDoc = new DOMParser().parseFromString((await (await fetch('https://polytoria.com/users/' + UserID)).text()), 'text/html')
+            const Friends = Array.from(ProfileDoc.getElementById('user-friends').children[0].children).slice(0, 6)
+            console.log(Friends)
+
+            PageContent.innerHTML = `
+            <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="#">
+                        <img src="https://web.archive.org/web/20190913110559im_/https://bloxtopia.xyz/images/BloxtopiaText.png" width="150">
+                    </a>
+                    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="#Games">
+                            Games
+                        </a>
+                        <a class="navbar-item" href="#Shop">
+                            Shop
+                        </a>
+                        <a class="navbar-item" href="#Organisations">
+                            Organisations
+                        </a>
+                        <a class="navbar-item" href="#Forum">
+                            Forums
+                        </a>
+                        <a class="navbar-item" href="#Users">
+                            Browse
+                        </a>
+                    </div>
+
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="button is-info" href="#Signup">
+                                    <strong>Sign up</strong>
+                                </a>
+                                <a class="button is-light" href="#Login">
+                                    Log in
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="container">
+                <br>
+                <br>
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-10">
+                        <div class="columns">
+                            <div class="column">
+                            <div class="box">
+                                <div class="has-text-centered">
+                                    <span class="title is-4">${i.username}</span>
+                                    <br>
+                                    ${ (i.playing === null) ? '<span class="tag is-grey">???</span>' : `<a href="https://polytoria.com/places/${i.playing.placeID}" class="tag is-success" style="text-decoration: none !important;">${i.playing.name}</a><br>` }
+                                    <br>
+                                </div>
+                                <div class="columns">
+                                    <div class="column">
+                                        <img src="${i.thumbnail.avatar}" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);">
+                                    </div>
+
+                                    <div class="column" style="text-align: center; vertical-align: middle;
+                        text-align: center;"><br>
+                                        <p style="font-size: 12px;"></p>
+                                        <div class="buttons mx-auto">
+                                            <a href="https://polytoria.com/inbox/messages/${UserID}/compose" class="button is-info is-small">Send message</a>
+                                            <button disabled class="button is-info is-small">Add friend</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box has-text-centered">
+                                <span class="title is-5">Achievements</span>
+                                <br><br>
+                                <!--<span>Bloxtopia doesn't have any badges!</span>-->
+                                <div class="columns">
+                                    ${ Badges.toSorted((a, b) => b.level - a.level).slice(0, 3).map((x) => `
+                                    <div class="column is-one-third">
+                                        <div onclick="window.location.href = 'https://polytoria.com/badges/'" class="box">
+                                            <div class="badge badge-lv-${ (x.level <= 4) ? x.level : 1} mx-auto" style="background-image: url(${x.thumbnail})"></div>
+                                            <span style="font-size: 12px;">${ (x.name.length <= 14) ? x.name : x.name.substring(0, 10)+'..' }</span>
+                                        </div>
+                                    </div>    
+                                    `).join('')
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="box has-text-centered">
+                                <span class="title is-5">${i.username}'s friends (???)</span>
+                                <br><br>
+                                <!--<span>Bloxtopia doesn't have any friends!</span>-->
+                                <div class="columns">
+                                    ${ Friends.slice(0, 3).map((x) => `
+                                    <div class="column is-one-third">
+                                        <div onclick="window.location.href = 'https://polytoria.com/users/${x.getElementsByTagName('a')[0].href}'" class="box">
+                                            <img src="${x.getElementsByTagName('img')[0].src.replace('-icon', '')}"><br>
+                                            <span style="font-size: 10px;">${x.getElementsByTagName('h6')[0].innerText}</span>
+                                        </div>
+                                    </div>
+                                    `).join('')
+                                    }
+                                </div>
+                                <div class="columns">
+                                    ${ Friends.slice(3).map((x) => `
+                                    <div class="column is-one-third">
+                                        <div onclick="window.location.href = 'https://polytoria.com/users/${x.getElementsByTagName('a')[0].href}'" class="box">
+                                            <img src="${x.getElementsByTagName('img')[0].src.replace('-icon', '')}"><br>
+                                            <span style="font-size: 10px;">${x.getElementsByTagName('h6')[0].innerText}</span>
+                                        </div>
+                                    </div>
+                                    `).join('')
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <span class="title is-5">${i.username}'s Inventory</span>
+                        <br><br>
+                        <div class="columns">
+                            <div class="column is-2">
+                                <aside class="menu">
+                                    <ul class="menu-list" id="inventory-selector">
+                                        <li><a class="is-active" onclick="LoadInventory('hat', this)">Hats</a></li>
+                                        <li><a onclick="LoadInventory('face', this)">Faces</a></li>
+                                        <li><a onclick="LoadInventory('shirt', this)">Shirts</a></li>
+                                        <li><a onclick="LoadInventory('pants', this)">Pants</a></li>
+                                        <li><a onclick="LoadInventory('tshirt', this)">T-Shirts</a></li>
+                                    </ul>
+                                </aside>    
+                            </div>
+                            <div class="is-divider-vertical"></div>
+                            <div class="column" id="inventory"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column"></div>
+            </div>
+            `
+
+            LoadInventory('hat', document.getElementById('inventory-selector').children[0].children[0])
+        }
+
+        async function GetUserID(username) {
+            return fetch('https://api.polytoria.com/v1/users/find?username='+username)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserID - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data.id
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserID - ' + error)
+                });
+        }
+        
+        async function GetUserDetails(userID) {
+            return fetch('https://api.polytoria.com/v1/users/'+userID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserDetails - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserDetails - ' + error)
+                });
+        }
+
+        let InventoryData = {
+            hat: null,
+            face: null,
+            shirt: null,
+            pants: null,
+            tshirt: {}
+        }
+        async function LoadInventory(category, selected) {
+            const Inventory = document.getElementById('inventory')
+            const InventorySelector = document.getElementById('inventory-selector')
+
+            if (InventoryData[category] === null && category !== "tshirt") {
+                InventoryResponse = await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=' + category + '&limit=12')
+                InventoryResponse = await InventoryResponse.json()
+                InventoryData[category] = InventoryResponse.inventory
+                //InventoryData[category] = await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=' + category + '&limit=12')).json()
+            } else {
+                console.log('cached')
+            }
+
+            Array.from(InventorySelector.children).forEach(selector=>{selector.children[0].classList.remove('is-active')})
+            selected.classList.add('is-active')
+
+            if (category === "tshirt") {
+                Inventory.innerHTML = `RIP T-SHIRTS`
+                return
+            }
+
+            Inventory.innerHTML = `
+            <div class="columns">
+                ${
+                    InventoryData[category].slice(0, 4).map((x) => `
+                    <div class="column">
+                        <div class="box zoom_sp" onclick="document.location = 'https://polytoria.com/store/${x.asset.id}'">
+                            <img src="${x.asset.thumbnail}"><br>
+                            <b style="
+                                display: block;
+                                width: 120px;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                            ">${x.asset.name}</b>
+                            ${ (x.asset.isLimited === true) ? `<i>Serial: #${x.serial}</i>` : '' }
+                            <br>
+                            <span>Creator: </span><i>someone?</i>
+                            <br>
+                        </div>
+                    </div>
+                    `).join('')
+                }
+            </div>
+            <div class="columns">
+                ${
+                    InventoryData[category].slice(4, 8).map((x) => `
+                    <div class="column">
+                        <div class="box zoom_sp" onclick="document.location = 'https://polytoria.com/store/${x.asset.id}'">
+                            <img src="${x.asset.thumbnail}"><br>
+                            <b style="
+                                display: block;
+                                width: 120px;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                            ">${x.asset.name}</b>
+                            ${ (x.asset.isLimited === true) ? `<i>Serial: #${x.serial}</i>` : '' }
+                            <br>
+                            <span>Creator: </span><i>someone?</i>
+                            <br>
+                        </div>
+                    </div>
+                    `).join('')
+                }
+            </div>
+            <div class="columns">
+                ${
+                    InventoryData[category].slice(8, 12).map((x) => `
+                    <div class="column">
+                        <div class="box zoom_sp" onclick="document.location = 'https://polytoria.com/store/${x.asset.id}'">
+                            <img src="${x.asset.thumbnail}"><br>
+                            <b style="
+                                display: block;
+                                width: 120px;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                            ">${x.asset.name}</b>
+                            ${ (x.asset.isLimited === true) ? `<i>Serial: #${x.serial}</i>` : '' }
+                            <br>
+                            <span>Creator: </span><i>someone?</i>
+                            <br>
+                        </div>
+                    </div>
+                    `).join('')
+                }
+            </div>
+            `
+        }
+
+        function $(query) {return document.querySelector(query)}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>Polytoria Profile Wayback</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="Polytoria Profile Wayback">
+    <meta name="description" content="See your Polytoria account's profile stylized to past iterations of the Polytoria site!">
+    <!-- RESOURCES -->
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+  </head>
+  <body>
+    <style>
+        :root {
+            --page-accent: red;
+        }
+    </style>
+    <main id="page" class="small-page text-center">
+        <small class="text-muted"><a href="/" class="text-decoration-none"><- go back</a></small>
+        <h1 id="page-title">Polytoria Profile Wayback</h1>
+        <p id="page-desc">Please enter your username below to generate your Polytoria account's profile page stylized to past iterations of the Polytoria site.</p>
+        <hr class="divider">
+        <div id="page-content">
+            <input type="text" class="form-control form-control-lg mb-2" placeholder="Username">
+            <button onclick="Submit(this.previousElementSibling.value)" class="btn btn-success btn-lg mx-auto d-block">Submit</button>
+        </div>
+    </main>
+    <script>
+        const PageTitle = $('#page-title')
+        const PageDesc = $('#page-desc')
+        const Page = $('#page')
+        const PageContent = $('#page-content')
+
+        const Params = new URLSearchParams(new URL(window.location.href).search)
+        if (Params.get('user')) {
+            Submit(Params.get('user'))
+        }
+
+        async function Submit(username) {
+            const UserID = await GetUserID(username)
+
+            if (UserID === 'ERROR') {
+                alert('No account found associated with that username. Please make sure you entered the correct username and try again.')
+                return
+            }
+
+            PageTitle.innerText = username + "'s Profile Wayback"
+            PageDesc.innerText = `Check out ${username}'s Polytoria profile on the wayback!`
+
+            PageContent.innerHTML = `
+            <small class="text-muted text-uppercase">Wayback Links</small>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="bloxtopia.html?user=${username}" target="_blank" class="text-decoration-none">Bloxtopia/Superium V1 (start - September 23rd 2019)</a>
+                </li>
+                MORE LINKS TO COME
+                <!--
+                <li>  
+                    <a href="#" target="_blank" class="text-decoration-none">Superium V2 (May 3rd 2020 - December 1st 2020)</a>
+                </li>
+                <li>
+                    <a href="#" target="_blank" class="text-decoration-none">Polytoria V1 (December 1st 2020 - April 14th 2023)</a>
+                </li>
+                <li>   
+                    <a href="#" target="_blank" class="text-decoration-none">Polytoria V2 (April 14th 2023 - ongoing)</a>
+                </li>
+                -->
+            </ul>
+            `
+        }
+
+        async function GetUserID(username) {
+            return fetch('https://api.polytoria.com/v1/users/find?username='+username)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserID - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data.id
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserID - ' + error)
+                });
+        }
+        
+        async function GetUserDetails(userID) {
+            return fetch('https://api.polytoria.com/v1/users/'+userID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserDetails - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserDetails - ' + error)
+                });
+        }
+
+        function $(query) {return document.querySelector(query)}
+    </script>
+  </body>
+</html>

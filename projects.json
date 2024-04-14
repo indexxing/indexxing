@@ -49,6 +49,14 @@
             "role": "creator"
         },
         {
+            "name": "Polytoria Profile Wayback",
+            "desc": "See your Polytoria account's profile stylized to past iterations of the Polytoria site!",
+            "url": "/polytoria-wayback/",
+            "development": "active",
+            "languages": "website",
+            "role": "creator"
+        },
+        {
             "name": "Operation: Sea Cleanup",
             "desc": "A Polytoria game about cleaning the sea.",
             "url": "https://polytoria.com/places/6012",
