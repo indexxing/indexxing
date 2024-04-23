@@ -118,7 +118,7 @@
             "name": "Polytoria Counter",
             "desc": "The best Polytoria counter website! (personal opinion)",
             "url": "/polytoria-counter/",
-            "development": "inactive",
+            "development": "static",
             "languages": "website",
             "role": "creator"
         }

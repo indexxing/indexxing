@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>Superium</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="Polytoria Profile Wayback">
+    <meta name="description" content="See your Polytoria account's profile stylized to past iterations of the Polytoria site!">
+ 
+    <!-- RESOURCES -->
+    <link rel="stylesheet" href="css.css" type="text/css">
+    <link rel="stylesheet" href="extensions.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lexend+Deca&amp;display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <style>
+        body {
+            font-family: 'Lexend Deca', sans-serif;
+        }
+
+        .box[onclick]:hover {
+            cursor: pointer;
+        }
+
+        .badge {
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 109px;
+            width: 109px;
+
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge.badge-lv-1 {
+            background-position: 0 0;
+        }
+
+        .badge.badge-lv-2 {
+            background-position: -115px 0;
+        }
+
+        .badge.badge-lv-3 {
+            background-position: -225px 0;
+        }
+
+        .badge.badge-lv-4 {
+            background-position: -335px 0;
+        }
+    </style>
+    <nav class="navbar is-fixed-top has-shadow">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item sp-navbar-zoom" href="#">
+              <img src="https://web.archive.org/web/20201105003950im_/https://superium.net/images/navbar-logo.png" class="zoom-element">
+            </a>
+            <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+          <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item sp-navbar-zoom" href="#Games">
+                    <span class="zoom-element">
+                        <span class="icon">
+                            <ion-icon name="game-controller"></ion-icon>
+                        </span>
+                        &nbsp;&nbsp;Games
+                    </span>
+                </a>
+                <a class="navbar-item sp-navbar-zoom" href="#Shop">
+                    <span class="zoom-element"><span class="icon"><ion-icon name="cart"></ion-icon></span>&nbsp;&nbsp;Shop</span>
+                </a>
+                <a class="navbar-item sp-navbar-zoom" href="#Forum">
+                    <span class="zoom-element"><span class="icon"><ion-icon name="chatbubble"></ion-icon></span>&nbsp;&nbsp;Forum</span>
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable" id="spNavExtra">
+                    <a class="navbar-link sp-navbar-zoom"><span class="zoom-element">Extra</span></a>
+                    <div class="navbar-dropdown is-boxed">
+                        <a href="#Users" class="navbar-item sp-navbar-shift"><span class="zoom-element"><span class="icon"><ion-icon name="people"></ion-icon></span>&nbsp;&nbsp;Users</span></a>
+                        <a href="#Guilds" class="navbar-item sp-navbar-shift"><span class="zoom-element"><span class="icon"><ion-icon name="cube"></ion-icon></span>&nbsp;&nbsp;Guilds</span></a>
+                        <hr class="dropdown-divider">
+                        <a href="#Currency" class="navbar-item has-text-warning sp-navbar-shift"><span class="zoom-element"><span class="icon"><ion-icon name="server"></ion-icon></span>&nbsp;&nbsp;Currency</span></a>
+                        <a href="#Pro" class="navbar-item has-text-primary sp-navbar-shift"><span class="zoom-element"><span class="icon"><i class="fas fa-award"></i></span>&nbsp;&nbsp;Superium Pro</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <a class="navbar-item" id="spNavLoginLink" href="#">Login</a>
+                <div class="navbar-item">
+                    <a class="button is-info is-rounded" href="#Signup">Sign up!</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main id="page-content"></main>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script>
+        const PageContent = $('#page-content')
+        let UserID = null
+
+        const Params = new URLSearchParams(new URL(window.location.href).search)
+        if (Params.has('id') && !isNaN(Params.get('id'))) {
+            UserID = Params.get('id')
+            Submit(null)
+        } else if (Params.has('user')) {
+            Submit(Params.get('user'))
+        } else {
+            window.location.href = "https://" + window.location.hostname + '/projects/polytoria-wayback/'
+        }
+
+        async function Submit(username) {
+            if (UserID === null) {
+                UserID = await GetUserID(username)
+            }
+            const i = await GetUserDetails(UserID)
+
+            if (UserID === 'ERROR' || i === 'ERROR') {
+                alert('No account found associated with that username. Please make sure you entered the correct username and try again.')
+                window.location.href = "https://" + window.location.hostname + '/projects/polytoria-wayback/'
+                // return just in case because why not
+                return
+            }
+
+            const Badges = (await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/badges')).json()).badges
+            const ProfileDoc = new DOMParser().parseFromString((await (await fetch('https://polytoria.com/users/' + UserID)).text()), 'text/html')
+            const Friends = Array.from(ProfileDoc.getElementById('user-friends').children[0].children).slice(0, 6)
+            const Guilds = Array.from(ProfileDoc.getElementById('user-guilds').children[0].children).splice(0, 3)
+
+            PageContent.innerHTML = `
+            <div class="container" style="margin-top: 30px;">
+                <div style="height: 96px;"></div>
+                <br>
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-10">
+                        <div class="box">
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <div class="box">
+                                        <img src="${i.thumbnail.avatar}" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);">
+                                    </div>
+                                    <a class="button is-danger is-small" style="margin-top: -15px; float: right;" href="https://polytoria.com/report/user/${UserID}">Report</a>
+                                    <br>
+                                    <span class="title is-5">Description</span>
+                                    <div class="box">
+                                        ${i.description}
+                                    </div>
+                                    <nav class="panel">
+                                        <p class="panel-heading">
+                                            Stats
+                                        </p>
+                                        <div class="panel-block" style="display: block">
+                                            <b>Profile views: </b><span style="float: right">${i.profileViews}</span>
+                                        </div>
+                                        <div class="panel-block" style="display: block">
+                                            <b>Item sales: </b><span style="float: right">${i.assetSales}</span>
+                                        </div>
+                                        <div class="panel-block" style="display: block">
+                                            <b>Trade value: </b><span style="float: right">${i.netWorth}</span>
+                                        </div>
+                                        <div class="panel-block" style="display: block">
+                                            <b>Join date: </b><span style="float: right">${new Date(i.registeredAt).getDate()}/${new Date(i.registeredAt).getMonth()}/${new Date(i.registeredAt).getFullYear()}</span>
+                                        </div>
+                                    </nav>
+                                </div>
+                                <div class="column">
+                                    <div class="columns">
+                                        <div class="column">
+                                            <h1 class="title is-3">${i.username}</h1>
+                                        </div>
+                                        <div class="column">
+                                            <a class="button is-small is-info" href="https://polytoria.com/trade/new/${UserID}">Trade</a>
+                                            &nbsp;&nbsp;&nbsp;<a class="button is-small is-info" href="https://polytoria.com/inbox/messages/${UserID}/compose">Message</a>
+                                            &nbsp;&nbsp;&nbsp;<a class="button is-small is-info" disabled>Add friend</a>
+                                            &nbsp;&nbsp;&nbsp;<a class="button is-small is-danger" disabled>Block</a>
+                                        </div>
+                                    </div>
+
+                                    <nav class="panel">
+                                        <p class="panel-heading">
+                                            <a href="#Friends">Friends</a> (???)
+                                        </p>
+                                        <div class="panel-block has-text-centered">
+                                            ${ Friends.slice(0, 3).map((x) => `
+                                            <div class="column is-one-third" style="cursor: pointer" onclick="window.location.href = 'https://polytoria.com${x.getElementsByTagName('a')[0].getAttribute('href')}'">
+                                                <div class="box">
+                                                    <img src="${x.getElementsByTagName('img')[0].src.replace('-icon', '')}" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);">
+                                                    <br>
+                                                    <span style="
+                                                        display: block;
+                                                        width: 165px;
+                                                        overflow: hidden;
+                                                        white-space: nowrap;
+                                                        text-overflow: ellipsis;
+                                                        font-size: 14px;
+                                                    ">${x.getElementsByTagName('h6')[0].innerText}</span>
+                                                </div>
+                                            </div>
+                                            `).join('')
+                                            }
+                                        </div>
+                                        <div class="panel-block has-text-centered">
+                                            ${ Friends.slice(3, 6).map((x) => `
+                                            <div class="column is-one-third" style="cursor: pointer" onclick="window.location.href = 'https://polytoria.com${x.getElementsByTagName('a')[0].getAttribute('href')}'">
+                                                <div class="box">
+                                                    <img src="${x.getElementsByTagName('img')[0].src.replace('-icon', '')}" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);">
+                                                    <br>
+                                                    <span style="
+                                                        display: block;
+                                                        width: 165px;
+                                                        overflow: hidden;
+                                                        white-space: nowrap;
+                                                        text-overflow: ellipsis;
+                                                        font-size: 14px;
+                                                    ">${x.getElementsByTagName('h6')[0].innerText}</span>
+                                                </div>
+                                            </div>
+                                            `).join('')
+                                            }
+                                        </div>
+                                        <div class="panel-block"></div>
+                                    </nav>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <nav class="panel">
+                                        <p class="panel-heading">
+                                            Guilds
+                                        </p>
+                                        ${ Guilds.map((x) => `
+                                        <a class="panel-block" href="https://polytoria.com${x.getElementsByTagName('a')[0].getAttribute('href')}">
+                                            <img src="${x.getElementsByTagName('img')[0].src}" style="width: 50px; border-radius: 10px;">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${x.getElementsByTagName('h5')[0].innerText}
+                                        </a>    
+                                        `).join('')
+                                        }
+                                    </nav>
+                                </div>
+                                <div class="column">
+                                    <div class="box">
+                                        <center><span class="title is-5">Achievements</span></center><br>
+                                        <!--<center>${i.username} doesn't have any badges!</center>-->
+                                        <div class="columns has-text-centered">
+                                            ${ Badges.toSorted((a, b) => b.level - a.level).slice(0, 4).map((x) => `
+                                            <div class="column is-one-quarter">
+                                                <div class="box" onclick="window.location.href = 'https://polytoria.com/badges/'">
+                                                    <div class="badge badge-lv-${ (x.level <= 4) ? x.level : 1} mx-auto" style="background-image: url(${x.thumbnail})"></div>
+                                                    <br>
+                                                    <span style="font-size: 12px;">${ (x.name.length <= 14) ? x.name : x.name.substring(0, 10)+'..' }</span>
+                                                </div>
+                                            </div> 
+                                            `).join('')
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box">
+                                <h1 class="title is-5" style="margin-bottom: 0px;">${i.username}'s Inventory</h1>
+                                <small style="font-size: 0.7rem;">ignore the fact that the columns overflow the page, idk why they do that</small>
+                                <h1 class="title is-5"> </h1>
+                                <div class="columns">
+                                    <div class="column is-2">
+                                    <aside class="menu">
+                                        <ul class="menu-list" id="inventory-selector">
+                                            <li><a class="is-active" onclick="LoadInventory('hat', this)">Hats</a></li>
+                                            <li><a onclick="LoadInventory('face', this)">Faces</a></li>
+                                            <li><a onclick="LoadInventory('shirt', this)">Shirts</a></li>
+                                            <li><a onclick="LoadInventory('pants', this)">Pants</a></li>
+                                            <li><a onclick="LoadInventory('tool', this)">Tools</a></li>
+                                        </ul>
+                                    </aside>
+                                    </div>
+                                    <div class="is-divider-vertical"></div>
+                                    <div class="column" id="inventory"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column"></div>
+                </div>
+                <br>
+            </div>
+
+            <footer class="footer" style="position:relative;
+                bottom:0; width: 100%">
+                <div class="content has-text-centered">
+                    <p>
+                        site fetching by Index, used Wayback Machine for design info, original site by Willemsteller, Superium 2017-2020.<br><a href="#About">About</a> | <a href="#TOS">Terms of Service</a> | <a href="#privacy_policy">Privacy Policy</a> | <a href="https://twitter.com/PlaySuperium">Twitter</a> | <a href="https://discord.gg/CKzmE5t">Discord</a>
+                    </p>
+                </div>
+            </footer>
+            `
+
+            LoadInventory('hat', document.getElementById('inventory-selector').children[0].children[0])
+        }
+
+        async function GetUserID(username) {
+            return fetch('https://api.polytoria.com/v1/users/find?username='+username)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserID - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data.id
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserID - ' + error)
+                });
+        }
+        
+        async function GetUserDetails(userID) {
+            return fetch('https://api.polytoria.com/v1/users/'+userID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('GetUserDetails - Network not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data
+                })
+                .catch(error => {
+                    return 'ERROR'
+                    console.log('GetUserDetails - ' + error)
+                });
+        }
+
+        let InventoryData = {
+            hat: null,
+            face: null,
+            shirt: null,
+            pants: null,
+            tool: null
+        }
+        async function LoadInventory(category, selected) {
+            const Inventory = document.getElementById('inventory')
+            const InventorySelector = document.getElementById('inventory-selector')
+
+            if (InventoryData[category] === null && category !== "tshirt") {
+                InventoryResponse = await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=' + category + '&limit=12')
+                InventoryResponse = await InventoryResponse.json()
+                InventoryData[category] = InventoryResponse.inventory
+            }
+
+            Array.from(InventorySelector.children).forEach(selector=>{selector.children[0].classList.remove('is-active')})
+            selected.classList.add('is-active')
+
+            if (category === "tshirt") {
+                Inventory.innerHTML = `RIP T-SHIRTS`
+                return
+            }
+
+            Inventory.innerHTML = `
+            <div class="columns">
+                ${
+                    InventoryData[category].slice(0, 4).map((x) => `
+                    <div class="column">
+                        <div class="box zoom_sp" onclick="document.location = 'https://polytoria.com/store/${x.asset.id}'">
+                            <img src="${x.asset.thumbnail}" width="140">
+                            <br>
+                            <b style="
+                                display: block;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                width: 153px;
+                            ">${x.asset.name}</b>
+                            ${ (x.asset.isLimited === true) ? `<i>Serial: #${x.serial} ${ (x.serial === 0 || x.serial === 1) ? '(Original)' : '' }</i>` : '' }
+                            <br>
+                            <span>Creator: </span><br><i>someone?</i>
+                            <br>
+                        </div>
+                    </div>
+                    `).join('')
+                }
+            </div>
+            <div class="columns">
+                ${
+                    InventoryData[category].slice(4, 8).map((x) => `
+                    <div class="column">
+                        <div class="box zoom_sp" onclick="document.location = 'https://polytoria.com/store/${x.asset.id}'">
+                            <img src="${x.asset.thumbnail}">
+                            <br>
+                            <b style="
+                                display: block;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                width: 153px;
+                            ">${x.asset.name}</b>
+                            ${ (x.asset.isLimited === true) ? `<i>Serial: #${x.serial} ${ (x.serial === 0 || x.serial === 1) ? '(Original)' : '' }</i>` : '' }
+                            <br>
+                            <span>Creator: </span><br><i>someone?</i>
+                            <br>
+                        </div>
+                    </div>
+                    `).join('')
+                }
+            </div>
+            <div class="columns">
+                ${
+                    InventoryData[category].slice(8, 12).map((x) => `
+                    <div class="column">
+                        <div class="box zoom_sp" onclick="document.location = 'https://polytoria.com/store/${x.asset.id}'">
+                            <img src="${x.asset.thumbnail}">
+                            <br>
+                            <b style="
+                                display: block;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                width: 153px;
+                            ">${x.asset.name}</b>
+                            ${ (x.asset.isLimited === true) ? `<i>Serial: #${x.serial} ${ (x.serial === 0 || x.serial === 1) ? '(Original)' : '' }</i>` : '' }
+                            <br>
+                            <span>Creator: </span><br><i>someone?</i>
+                            <br>
+                        </div>
+                    </div>
+                    `).join('')
+                }
+            </div>
+            <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
+              <ul class="pagination-list">
+                <li><a class="pagination-link" onclick="alert('no')" aria-label="First page">«</a></li>
+                <li><a class="pagination-link" onclick="alert('no')" aria-label="Previous page">‹</a></li>
+                <li><a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a></li>
+                <li><a class="pagination-link" onclick="alert('no')" aria-label="Next page">›</a></li>
+                <li><a class="pagination-link" onclick="alert('no')" aria-label="Last page">»</a></li>
+              </ul>
+            </nav>
+            `
+        }
+
+        function $(query) {return document.querySelector(query)}
+    </script>
+  </body>
+</html>

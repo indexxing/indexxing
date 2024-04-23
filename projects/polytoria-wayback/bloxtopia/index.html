@@ -12,7 +12,8 @@
     <meta name="description" content="See your Polytoria account's profile stylized to past iterations of the Polytoria site!">
  
     <!-- RESOURCES -->
-    <link rel="stylesheet" href="Bloxtopia-CSS.css" type="text/css">
+    <link rel="stylesheet" href="css.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Varela+Round:300,400,500,700" rel="stylesheet">
   </head>
   <body>
@@ -51,14 +52,63 @@
             background-position: -147px 0;
         }
     </style>
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                <img src="https://web.archive.org/web/20190913110559im_/https://bloxtopia.xyz/images/BloxtopiaText.png" width="150">
+            </a>
+            <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="#Games">
+                    Games
+                </a>
+                <a class="navbar-item" href="#Shop">
+                    Shop
+                </a>
+                <a class="navbar-item" href="#Organisations">
+                    Organisations
+                </a>
+                <a class="navbar-item" href="#Forum">
+                    Forums
+                </a>
+                <a class="navbar-item" href="#Users">
+                    Browse
+                </a>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-info" href="#Signup">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light" href="#Login">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
     <main id="page-content"></main>
     <script>
         const PageContent = $('#page-content')
         let UserID = null
 
         const Params = new URLSearchParams(new URL(window.location.href).search)
-        if (Params.get('user')) {
+        if (Params.has('id') && !isNaN(Params.get('id'))) {
+            UserID = Params.get('id')
+            Submit(null)
+        } else if (Params.has('user')) {
             Submit(Params.get('user'))
+        } else {
+            window.location.href = "https://" + window.location.hostname + '/projects/polytoria-wayback/'
         }
 
         async function Submit(username) {
@@ -67,59 +117,16 @@
 
             if (UserID === 'ERROR' || i === 'ERROR') {
                 alert('No account found associated with that username. Please make sure you entered the correct username and try again.')
+                window.location.href = "https://" + window.location.hostname + '/projects/polytoria-wayback/'
+                // return just in case because why not
                 return
             }
 
             const Badges = (await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/badges')).json()).badges
             const ProfileDoc = new DOMParser().parseFromString((await (await fetch('https://polytoria.com/users/' + UserID)).text()), 'text/html')
             const Friends = Array.from(ProfileDoc.getElementById('user-friends').children[0].children).slice(0, 6)
-            console.log(Friends)
 
             PageContent.innerHTML = `
-            <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand">
-                    <a class="navbar-item" href="#">
-                        <img src="https://web.archive.org/web/20190913110559im_/https://bloxtopia.xyz/images/BloxtopiaText.png" width="150">
-                    </a>
-                    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                    </a>
-                </div>
-                <div class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="#Games">
-                            Games
-                        </a>
-                        <a class="navbar-item" href="#Shop">
-                            Shop
-                        </a>
-                        <a class="navbar-item" href="#Organisations">
-                            Organisations
-                        </a>
-                        <a class="navbar-item" href="#Forum">
-                            Forums
-                        </a>
-                        <a class="navbar-item" href="#Users">
-                            Browse
-                        </a>
-                    </div>
-
-                    <div class="navbar-end">
-                        <div class="navbar-item">
-                            <div class="buttons">
-                                <a class="button is-info" href="#Signup">
-                                    <strong>Sign up</strong>
-                                </a>
-                                <a class="button is-light" href="#Login">
-                                    Log in
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
             <div class="container">
                 <br>
                 <br>
@@ -153,7 +160,7 @@
                             <div class="box has-text-centered">
                                 <span class="title is-5">Achievements</span>
                                 <br><br>
-                                <!--<span>Bloxtopia doesn't have any badges!</span>-->
+                                <!--<span>${i.username} doesn't have any badges!</span>-->
                                 <div class="columns">
                                     ${ Badges.toSorted((a, b) => b.level - a.level).slice(0, 3).map((x) => `
                                     <div class="column is-one-third">
@@ -175,9 +182,16 @@
                                 <div class="columns">
                                     ${ Friends.slice(0, 3).map((x) => `
                                     <div class="column is-one-third">
-                                        <div onclick="window.location.href = 'https://polytoria.com/users/${x.getElementsByTagName('a')[0].href}'" class="box">
+                                        <div onclick="window.location.href = 'https://polytoria.com${x.getElementsByTagName('a')[0].getAttribute('href')}'" class="box">
                                             <img src="${x.getElementsByTagName('img')[0].src.replace('-icon', '')}"><br>
-                                            <span style="font-size: 10px;">${x.getElementsByTagName('h6')[0].innerText}</span>
+                                            <span style="
+                                                display: block;
+                                                width: 120px;
+                                                overflow: hidden;
+                                                white-space: nowrap;
+                                                text-overflow: ellipsis;
+                                                font-size: 10px;
+                                            ">${x.getElementsByTagName('h6')[0].innerText}</span>
                                         </div>
                                     </div>
                                     `).join('')
@@ -186,14 +200,22 @@
                                 <div class="columns">
                                     ${ Friends.slice(3).map((x) => `
                                     <div class="column is-one-third">
-                                        <div onclick="window.location.href = 'https://polytoria.com/users/${x.getElementsByTagName('a')[0].href}'" class="box">
+                                        <div onclick="window.location.href = 'https://polytoria.com${x.getElementsByTagName('a')[0].getAttribute('href')}'" class="box">
                                             <img src="${x.getElementsByTagName('img')[0].src.replace('-icon', '')}"><br>
-                                            <span style="font-size: 10px;">${x.getElementsByTagName('h6')[0].innerText}</span>
+                                            <span style="
+                                                display: block;
+                                                width: 120px;
+                                                overflow: hidden;
+                                                white-space: nowrap;
+                                                text-overflow: ellipsis;
+                                                font-size: 10px;
+                                            ">${x.getElementsByTagName('h6')[0].innerText}</span>
                                         </div>
                                     </div>
                                     `).join('')
                                     }
                                 </div>
+                                <a href="#Friends">View All</a>
                             </div>
                         </div>
                     </div>
@@ -216,9 +238,51 @@
                             <div class="column" id="inventory"></div>
                         </div>
                     </div>
+                    <br>
+                    <nav class="level" id="playerstats">
+                        <div class="level-item has-text-centered">
+                            <div>
+                            <p class="heading">Join date</p>
+                            <p class="title">${new Date(i.registeredAt).getDate()}/${new Date(i.registeredAt).getMonth()}/${new Date(i.registeredAt).getFullYear()}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                            <p class="heading">Page views</p>
+                            <p class="title">${i.profileViews}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                            <p class="heading">Item sales</p>
+                            <p class="title">${i.assetSales}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                            <p class="heading">Owned items</p>
+                            <p class="title">at least 1 maybe?</p>
+                            </div>
+                        </div>
+                    </nav>
                 </div>
                 <div class="column"></div>
             </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>
+                    site fetching by Index, used Wayback Machine for design info, original site by Willemsteller, Bloxtopia 2018-2019.<br><a href="#About">About</a> | <a href="#TOS">Terms of Service</a> | <a href="#privacy_policy">Privacy Policy</a> | <a href="#https://discord.gg/CKzmE5t">Discord</a>
+                    </p>
+                </div>
+            </footer>
             `
 
             LoadInventory('hat', document.getElementById('inventory-selector').children[0].children[0])
@@ -273,9 +337,6 @@
                 InventoryResponse = await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=' + category + '&limit=12')
                 InventoryResponse = await InventoryResponse.json()
                 InventoryData[category] = InventoryResponse.inventory
-                //InventoryData[category] = await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=' + category + '&limit=12')).json()
-            } else {
-                console.log('cached')
             }
 
             Array.from(InventorySelector.children).forEach(selector=>{selector.children[0].classList.remove('is-active')})

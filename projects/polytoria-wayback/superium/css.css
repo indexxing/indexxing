@@ -1,0 +1,295 @@
+/*
+
+  This CSS came from bloxtopia.xyz (November 5th 2020)
+  Taken from The Internet Wayback Machine
+  The original site owner gave me permission to use this: https://imgur.com/a/VyGekVo
+
+*/
+
+.LandingCreate {
+    display: inline-block;
+    color: #ff6363;
+  }
+  
+  .LandingCreate span {
+    position: absolute;
+    top: 0;
+    animation: animate 10s linear infinite;
+    opacity: 0;
+  }
+  
+  @keyframes animate {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    2% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    18% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    20% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+  }
+  
+  @keyframes shake {
+    0% { transform: translate(1px, 0px) rotate(0deg); }
+    10% { transform: translate(-1px, 0px) rotate(0deg); }
+    20% { transform: translate(-3px, 0px) rotate(0deg); }
+    30% { transform: translate(3px, 0px) rotate(0deg); }
+    40% { transform: translate(1px, 0px) rotate(0deg); }
+    50% { transform: translate(-1px, 0px) rotate(0deg); }
+    60% { transform: translate(-3px, 0px) rotate(0deg); }
+    70% { transform: translate(3px, 0px) rotate(0deg); }
+    80% { transform: translate(-1px, 0px) rotate(0deg); }
+    90% { transform: translate(1px, 0px) rotate(0deg); }
+    100% { transform: translate(1px, 0px) rotate(0deg); }
+  }
+  
+  .LandingCreate span:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .LandingCreate span:nth-child(2) {
+    animation-delay: 2s;
+  }
+  
+  .LandingCreate span:nth-child(3) {
+    animation-delay: 4s;
+  }
+  
+  .LandingCreate span:nth-child(4) {
+    animation-delay: 6s;
+  }
+  
+  .LandingCreate span:nth-child(5) {
+    animation-delay: 8s;
+  }
+  
+  .spm_card_zoom {
+      -webkit-transition: all 200ms ease-in;
+      -webkit-transform: scale(1);
+      -ms-transition: all 200ms ease-in;
+      -ms-transform: scale(1);
+      -moz-transition: all 200ms ease-in;
+      -moz-transform: scale(1);
+      transform: scale(1);
+      z-index: 2;
+  }
+  
+  .spm_card_zoom:hover {
+      z-index: 3;
+      -webkit-transition: all 200ms ease-in;
+      -webkit-transform: scale(1.5);
+      -ms-transition: all 200ms ease-in;
+      -ms-transform: scale(1.5);
+      -moz-transition: all 200ms ease-in;
+      -moz-transform: scale(1.5);
+      transition: all 200ms ease-in;
+      transform: scale(1.2);
+  }
+  
+  .zoom_sp {
+      transition: transform .2s;
+    }
+    .zoom_sp:hover {
+      transform: scale(1.2);
+      cursor: hand;
+      z-index: 29;
+    }
+  
+  .is-limited .box {
+    background-color: #e09082;
+    background-image: linear-gradient(315deg, #e09082 0%, #f8dba4 74%);
+  }
+  .sp-achievement h1 {
+    /*color: white !important;*/
+  }
+  
+  .sp-achievement .box {
+    background-image: linear-gradient(315deg, #FFEEEE 0%, #DDEFBB 100%);
+    /*color: white !important;*/
+  }
+  
+  
+  
+  .tag.is-notification {
+    font-size: .6rem !important;
+  }
+  
+  .tag.unread-dropdown {
+    font-size: .5rem !important;
+  }
+  
+  #spm_landing_bg_video {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+  
+  #SuperiumLanding {
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+    top: 40%;
+  }
+  
+  #Wardrobe {
+    min-height: 550px;
+  }
+  
+  #Wardrobe .wardrobe-item {
+    max-height: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .CatalogItemPlaceHolder {
+    height: 257px;
+  
+    background: linear-gradient(124deg, #e0e0e0, #969696, #e0e0e0);
+    background-size: 1800% 1800%;
+  
+    -webkit-animation: rainbow 5s ease infinite;
+    -z-animation: rainbow 5s ease infinite;
+    -o-animation: rainbow 5s ease infinite;
+      animation: rainbow 5s ease infinite;}
+  
+    @-webkit-keyframes rainbow {
+        0%{background-position:0% 82%}
+        50%{background-position:100% 19%}
+        100%{background-position:0% 82%}
+    }
+    @-moz-keyframes rainbow {
+        0%{background-position:0% 82%}
+        50%{background-position:100% 19%}
+        100%{background-position:0% 82%}
+    }
+    @-o-keyframes rainbow {
+        0%{background-position:0% 82%}
+        50%{background-position:100% 19%}
+        100%{background-position:0% 82%}
+    }
+    @keyframes rainbow {
+        0%{background-position:0% 82%}
+        50%{background-position:100% 19%}
+        100%{background-position:0% 82%}  100%{background-position:0% 51%}
+      }
+  }
+  
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    opacity: 0;
+    transition: opacity 0.4s;
+  
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  body.modal-open {
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+  }
+  
+  .spmForumPost {
+    border-radius: 0px !important;
+    margin-bottom: 0px !important;
+    border: solid 1px #FAFAFA;
+  }
+  
+  .shop-limited {
+    color: red;
+  }
+  
+  @keyframes bounce {
+      0%, 100%, 50%, 80% {
+          -webkit-transform: translateY(0);
+          -ms-transform:     translateY(0);
+          transform:         translateY(0)
+      }
+      40% {
+          -webkit-transform: translateY(-5px);
+          -ms-transform:     translateY(-5px);
+          transform:         translateY(-5px)
+      }
+      60% {
+          -webkit-transform: translateY(-2px);
+          -ms-transform:     translateY(-2px);
+          transform:         translateY(-2px)
+      }
+  }
+  .bounce:hover > .panel-icon {
+    animation: bounce 1s linear forwards;
+  }
+  
+  .sp-navbar-zoom > .zoom-element {
+      transition: transform .2s;
+    }
+    .sp-navbar-zoom:hover > .zoom-element {
+      transform: scale(1.15);
+      cursor: hand;
+    }
+  
+    .sp-navbar-shift > .zoom-element {
+        transition: transform .2s;
+      }
+      .sp-navbar-shift:hover > span {
+        transform: translateX(7px);
+      }
+  
+  /* Copyright (c) 2019-2020 Superium All Rights Reserved. */
+  
+  /*
+       FILE ARCHIVED ON 00:39:52 Nov 05, 2020 AND RETRIEVED FROM THE
+       INTERNET ARCHIVE ON 01:41:59 Apr 15, 2024.
+       JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+  
+       ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+       SECTION 108(a)(3)).
+  */
+  /*
+  playback timings (ms):
+    captures_list: 0.666
+    exclusion.robots: 0.174
+    exclusion.robots.policy: 0.164
+    cdx.remote: 0.053
+    esindex: 0.01
+    LoadShardBlock: 85.354 (3)
+    PetaboxLoader3.datanode: 47.453 (4)
+    PetaboxLoader3.resolve: 133.605 (2)
+    load_resource: 123.002
+  */

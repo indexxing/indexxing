@@ -36,13 +36,20 @@
         const Page = $('#page')
         const PageContent = $('#page-content')
 
+        let UserID = null
+
         const Params = new URLSearchParams(new URL(window.location.href).search)
-        if (Params.get('user')) {
+        if (Params.get('id') && !isNaN(Params.get('id'))) {
+            UserID = Params.get('id')
+            Submit(null)
+        } else if (Params.get('user')) {
             Submit(Params.get('user'))
         }
 
         async function Submit(username) {
-            const UserID = await GetUserID(username)
+            if (UserID === null) {
+                UserID = await GetUserID(username)
+            }
 
             if (UserID === 'ERROR') {
                 alert('No account found associated with that username. Please make sure you entered the correct username and try again.')
@@ -56,13 +63,13 @@
             <small class="text-muted text-uppercase">Wayback Links</small>
             <ul class="list-unstyled">
                 <li>
-                    <a href="bloxtopia.html?user=${username}" target="_blank" class="text-decoration-none">Bloxtopia/Superium V1 (start - September 23rd 2019)</a>
+                    <a href="bloxtopia/?id=${UserID}" target="_blank" class="text-decoration-none">Bloxtopia/Superium V1 (start - September 23rd 2019)</a>
+                </li>
+                <li>  
+                    <a href="superium/?id=${UserID}" target="_blank" class="text-decoration-none">Superium V2 (May 3rd 2020 - December 1st 2020)</a>
                 </li>
                 MORE LINKS TO COME
                 <!--
-                <li>  
-                    <a href="#" target="_blank" class="text-decoration-none">Superium V2 (May 3rd 2020 - December 1st 2020)</a>
-                </li>
                 <li>
                     <a href="#" target="_blank" class="text-decoration-none">Polytoria V1 (December 1st 2020 - April 14th 2023)</a>
                 </li>
