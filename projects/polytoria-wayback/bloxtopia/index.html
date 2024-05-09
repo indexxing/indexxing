@@ -112,7 +112,10 @@
         }
 
         async function Submit(username) {
-            UserID = await GetUserID(username)
+            if (UserID === null) {
+                UserID = await GetUserID(username)
+            }
+            
             const i = await GetUserDetails(UserID)
 
             if (UserID === 'ERROR' || i === 'ERROR') {
