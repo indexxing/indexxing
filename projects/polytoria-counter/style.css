@@ -88,6 +88,11 @@ small {
   color: #bababa !important;
 }
 
+.guild-banner {
+  width: 275px;
+  height: 137.5px;
+}
+
 .guild-banner[src="https://c0.ptacdn.com/guilds/banners/default.png"] {
   background: #3C3C3C;
 }

@@ -1,14 +1,10 @@
-/*
-  - MAYBE ADD AUTO REFRESHING FOR COUNTERS AND STATISTICS
-*/
-
 document.addEventListener('DOMContentLoaded', function(){
   Array.from(document.getElementById('sidebar-nav').children).forEach(element => {
     if (element.getAttribute('data-pathname') === window.location.pathname) {
       element.classList.add('active')
     }
   });
-  if (new URLSearchParams(new URL(window.location.href).search).get('load') === "0") {
+  if (new URLSearchParams(window.location.search).get('load') === "false") {
     document.body.style.filter = ''
     return
   }
@@ -17,6 +13,16 @@ document.addEventListener('DOMContentLoaded', function(){
   LoadGuilds();
   LoadAssets();
   document.body.style.filter = ''
+
+  if (new URLSearchParams(window.location.search).get('autoRefreshUsers') === "true") {
+    setInterval(() => {
+      console.log('REFRESH AUTOMATICALLY')
+      LoadUsers();
+      //LoadPlaces();
+      //LoadGuilds();
+      //LoadAssets();
+    }, 2000);
+  }
 });
 
 function LoadUsers() {
@@ -60,13 +66,15 @@ function LoadUsers() {
           margin-bottom: 0px;
         "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/users/${user.id}" target="_blank">${user.username}</a>
         </h4>
-        <small>#${user.id} | ${new Date(user.registeredAt).toLocaleString()}</small>
+        <small>#${user.id.toLocaleString()} | ${new Date(user.registeredAt).getHours()}:${new Date(user.registeredAt).getMinutes()} ${ (new Date(user.registeredAt).getHours() < 12) ? 'AM' : 'PM' }</small>
         `
         List.appendChild(Column)
       });
       setTimeout(function () {
         document.getElementById('loadUsersBtn').removeAttribute('disabled')
       }, 1250)
+
+      //console.log('[USERS] ' + Requests + ' request(s) in ' + new Date().getTime()-Start + 'ms')
     })
     .catch(error => console.error(error));
 }
@@ -133,7 +141,7 @@ function LoadGuilds() {
           position: absolute;
           margin: 10px;
         " alt="${guild.name} Icon" class="guild-icon">
-        <img src="${guild.banner}" width="275" height="275" class="img-fluid img-rounded guild-banner">
+        <img src="${ (guild.banner !== "https://c0.ptacdn.com/guilds/banners/default.png") ? guild.banner : 'default-guild-banner.png' }" width="275" height="275" class="img-fluid img-rounded guild-banner" ${ (guild.banner === "https://c0.ptacdn.com/guilds/banners/default.png") ? `style="background-color: #${guild.color}"` : '' }>
         <br>
         <h4 style="
           white-space: pre;
@@ -183,7 +191,7 @@ function LoadAssets() {
           height: 35px;
           margin-top: 10px;
           margin-bottom: 0px;
-        "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/store/${item.id}" target="_blank">${item.name}</a> by <a class="link-reset" href="https://polytoria.com/users/${item.creator.id}" target="_blank">${item.creator.name}</h3>
+        "><small style="vertical-align: top;">${( index +1 )}.</small> <a class="link-reset" href="https://polytoria.com/store/${item.id}" target="_blank">${item.name}</a> by <a class="link-reset" href="https://polytoria.com/users/${item.creator.id}" target="_blank">${item.creator.name}</a></h3>
         `
         List.appendChild(Column)
       })
@@ -195,8 +203,10 @@ function LoadAssets() {
           document.getElementById('assetCount').innerText = (data_item[0].id + data_asset[0].id).toLocaleString()
           document.getElementById('assetCountTotal').innerText = (data_asset[0].id).toLocaleString()
 
+          /*
           document.getElementById('itemCountPercent').innerText = Math.round(100 * data_item[0].id / (data_item[0].id + data_asset[0].id))
           document.getElementById('assetCountPercent').innerText = Math.round(100 * data_asset[0].id / (data_asset[0].id + data_item[0].id))
+          */
         })
         .catch(error => console.error(error));
 
@@ -205,6 +215,123 @@ function LoadAssets() {
       }, 1250)
     })
     .catch(error => console.error(error));
+}
+
+async function CountAchievements(username, excludeBadgeWalks) {
+  requests = 1
+  const BadgeWalkPlaces = [8856, 8859]
+  const UserID = (await (await fetch('https://api.polytoria.com/v1/users/find?username=' + username)).json()).id
+  let Achievements = {
+    recent: null,
+    total: 0,
+    pages: 1,
+  }
+
+  requests++
+  
+  let AchievementData;
+  if (excludeBadgeWalks === false) {
+    AchievementData = (await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=achievement&limit=100')).json())
+    Achievements.recent = AchievementData.inventory.splice(0, 3)
+    Achievements.total = AchievementData.total
+    Achievements.pages = AchievementData.pages
+
+    document.getElementById('achievement-badge-walk-message').remove()
+  } else {
+    console.log('excluded')
+    let BadgeWalkAchievements = {
+      badges: [],
+      pages: {}
+    }
+    requests++
+    requests++
+    
+    requests++
+    AchievementData = (await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=achievement&limit=100')).json())
+    let ActualAchievements = {
+      achievements: [],
+      total: 0
+    }
+    const Cache = window.localStorage.getItem('poly-badgeWalkIDs')
+    const RightNow = new Date()
+    if (Cache === null || (RightNow.getFullYear() !== new Date(Cache.requested).getFullYear()) || (RightNow.getMonth() !== new Date(Cache.requested).getMonth()) || (RightNow.getDate() !== new Date(Cache.requested).getDate()) || (RightNow.getHours() !== new Date(Cache.requested).getHours())) {
+      for (let place of BadgeWalkPlaces) {
+        const Initial = await (await fetch('https://api.polytoria.com/v1/places/' + place + '/achievements?limit=100')).json()
+
+        BadgeWalkAchievements.badges.push(...Initial.achievements.map((x) => x.asset.id))
+        BadgeWalkAchievements.pages[place] = Initial.pages
+
+        if (AchievementData.pages <= 8) {
+          console.log('min pages')
+          for (let page = 1; page < BadgeWalkAchievements.pages[place]; page++) {
+            requests++
+            const PageResult = await (await fetch('https://api.polytoria.com/v1/places/' + place + '/achievements?limit=100&page=' + (page+1))).json()
+            BadgeWalkAchievements.badges.push(...PageResult.achievements.map((x) => x.asset.id))
+          }
+        }
+
+        console.log('finished achievement fetching for ' + place)
+      }
+
+      console.log('finished & cached')
+
+      window.localStorage.setItem('poly-badgeWalkIDs', JSON.stringify({
+        data: BadgeWalkAchievements,
+        requested: new Date().getTime()
+      }))
+    } else {
+      BadgeWalkAchievements = JSON.parse(window.localStorage.getItem('poly-badgeWalkIDs')).data
+    }
+
+    const InitialNotExcludedAchievements = AchievementData.inventory.filter((x) => BadgeWalkAchievements.badges.indexOf(x.asset.id) === -1 )
+    ActualAchievements.achievements.push(...InitialNotExcludedAchievements)
+    ActualAchievements.total += [...InitialNotExcludedAchievements].length
+
+    for (let page = 1; page < AchievementData.pages; page++) {
+      requests++
+      const PageResult = await (await fetch('https://api.polytoria.com/v1/users/' + UserID + '/inventory?type=achievement&limit=100&page=' + (page+1))).json()
+      const NotExcludedAchievements = PageResult.inventory.filter((x) => BadgeWalkAchievements.badges.indexOf(x.asset.id) === -1 )
+      ActualAchievements.achievements.push(...NotExcludedAchievements)
+      ActualAchievements.total += [...NotExcludedAchievements].length
+    }
+
+    console.log(ActualAchievements)
+    console.log('---')
+    console.log(BadgeWalkAchievements)
+
+    Achievements.recent = ActualAchievements.achievements.sort((a, b) => new Date(b.purchasedAt) - new Date(a.purchasedAt)).splice(0, 3)
+    Achievements.total = ActualAchievements.total
+  }
+
+  console.log(requests)
+
+  document.getElementById('achievement-1').remove()
+  document.getElementById('achievement-2').style.display = 'block'
+
+  document.getElementById('achievementTitle').innerText = username + "'s Achievements"
+  document.getElementById('achievementCount').innerText = Achievements.total.toLocaleString()
+
+  document.getElementById('achievement-badge-walk-message').innerHTML = `* excluding badge walk games or games of similar variety<br><span style="font-size:0.7rem;">${ (100-(Achievements.total * 100) / AchievementData.total).toFixed(2) }% from badge walks (included total: ${AchievementData.total}, badge walk achievements are cached for the rest of the hour)</span>`
+
+  let List = document.getElementById('achievementCountList')
+  Achievements.recent.forEach(achievement => {
+    let Column = document.createElement('div')
+    Column.classList = 'col-auto'
+    Column.innerHTML = `
+    <img src="${achievement.asset.thumbnail}" width="175" height="175" class="img-fluid img-rounded">
+    <br>
+    <h4 style="
+      white-space: pre;
+      width: 275px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 35px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+    "><small style="vertical-align: top;">#${( achievement.serial-1 )}.</small> <a class="link-reset" href="https://polytoria.com/store/${achievement.asset.id}" target="_blank">${achievement.asset.name}</a></h3>
+    `
+    List.appendChild(Column)
+  })
 }
 
 // Generated by AI cause I'm lazy

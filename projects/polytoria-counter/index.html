@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
   <head>
     <!-- META TAGS -->
     <meta charset="utf-8">
@@ -79,7 +79,7 @@
             <div id="guildCountList" class="row mx-auto" style="width: fit-content;"></div>
           </div> 
         </div>
-        <div class="card text-center">
+        <div class="card text-center mb-3">
           <div class="card-header">
             <button id="loadAssetsBtn" class="btn btn-danger" onclick="LoadAssets();" style="padding: 5px; padding-bottom: 0px; /* margin-bottom: 0px; */ font-size: 0.4rem; /* line-height: 1; */ position: absolute; top: 0; left: 0; border-top-right-radius: 0px; border-bottom-left-radius: 0px;">
               <span class="material-icons-outlined" style="font-size: 20px;">refresh</span>
@@ -93,15 +93,43 @@
             </h1>
             <div class="row">
               <div class="col">
-                <h3><span id="itemCountTotal">-</span> Items (<span id="itemCountPercent">-</span>%)</h3>
+                <h3><span id="itemCountTotal">-</span> Items</h3>
               </div>
               <div class="col">
-                <h3><span id="assetCountTotal">-</span> Assets (<span id="assetCountPercent">-</span>%)</h3>
+                <h3><span id="assetCountTotal">-</span> Assets</h3>
               </div>
             </div>
             <hr class="navbar-divider w-75 mt-3 mb-3 mx-auto">
             <p>Recently-Created Assets:</p>
             <div id="assetCountList" class="row mx-auto" style="width: fit-content;"></div>
+          </div> 
+        </div>
+        <div class="card">
+          <div class="card-header text-center">
+            <button id="clearAchievementsBtn" class="btn btn-primary" style="padding: 5px; padding-bottom: 0px; /* margin-bottom: 0px; */ font-size: 0.4rem; /* line-height: 1; */ position: absolute; top: 0; left: 0; border-top-right-radius: 0px; border-bottom-left-radius: 0px;">
+              <span class="material-icons-outlined" style="font-size: 20px;">x</span>
+            </button>
+            <span id="achievementTitle">User Achievements</span>
+          </div>
+          <div class="card-body">
+            <div class="card-background-image"></div>
+            <div id="achievement-1">
+              <input type="text" class="form-control mb-2 text-center" placeholder="Username...">
+              <button class="btn btn-primary w-25 d-block mx-auto mb-2" onclick="CountAchievements(this.previousElementSibling.value, this.nextElementSibling.children[0].checked)">Count</button>
+              <div class="form-check d-block mx-auto" style="width: fit-content;">
+                <input class="form-check-input" type="checkbox" value="" id="ex-badge-walk-achievements">
+                <label class="form-check-label" for="ex-badge-walk-achievements">
+                  Exclude Badge Walk Achievements?
+                </label>
+              </div>
+            </div>
+            <div id="achievement-2" class="text-center" style="display: none;">
+              <h1 style="text-shadow: 0px 4px 10px #000;"><span id="achievementCount">-</span> Achievements</h1>
+              <small class="text-muted" id="achievement-badge-walk-message">* excluding badge walk places or places of similar variety (achievement IDs cache for the rest of the day)</small>
+              <hr class="navbar-divider w-75 mt-3 mb-3 mx-auto">
+              <p>Recently-Awarded Achievements:</p>
+              <div id="achievementCountList" class="row mx-auto" style="width: fit-content;"></div>
+            </div>
           </div> 
         </div>
       </div>
