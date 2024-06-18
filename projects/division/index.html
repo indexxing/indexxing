@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <!-- META TAGS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <!-- PUBLIC -->
+    <title>The Greatest Division</title>
+    <meta name="author" content="Index's Projects">
+    <meta name="site_name" content="What Awaits..">
+    <meta name="description" content="Quickly visualize past rounds in Polytoria's The Great Divide 2024 event!">
+ 
+    <!-- RESOURCES -->
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet" integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <style>
+        :root {
+            --page-accent: #0e8742;
+        }
+
+        html, body { overflow: hidden; }
+
+        body {
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.2), 
+                rgba(0, 0, 0, 0.2)
+                ),
+                url('https://c0.ptacdn.com/places/thumbnails/ZZValAxVDSer_OshHxFqDVZkxPuwl6UU.png');
+            background-size: cover;
+        }
+        
+        main#page {
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.5), 
+                rgba(0, 0, 0, 0.5)
+                ),
+                transparent;
+            height: 100vh;
+            margin-top: 0px;
+            padding-top: 4rem;
+            margin-bottom: 0px;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+            width: 100%;
+
+            font-size: 0.6rem;
+        }
+
+        footer a {
+            color: var(--bs-secondary-color) !important;
+            text-decoration-color: var(--bs-secondary);
+        }
+
+        #results, #graphs {
+            height: 500px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        :-webkit-scrollbar-thumb {
+            width: 0px;
+        }
+    </style>
+    <main id="page" class="small-page text-center" style="width: 75%;">
+        <small class="text-muted"><a href="#" onclick="window.location.search = ''" class="text-decoration-none"><- go back</a></small>
+        <h1 id="page-title">Division Tracker</h1>
+        <p id="page-desc">Quickly visualize past rounds in Polytoria's "The Great Divide" 2024 event!</p>
+        <hr>
+
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Round ID..">
+            <button class="btn btn-success" onclick="window.location.search = 'id=' + this.previousElementSibling.value">Show</button>
+        </div>
+
+        <hr>
+        
+        <div id="page-content" style="text-align: left;"></div>
+
+        <footer>
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="https://polytoria.com/places/9656/" target="_blank">Polytoria "The Wayland Bridge" Background</a>
+                </li>
+            </ul>
+            <small>I am <b>not</b> affiliated with Polytoria in any way.</small>
+        </footer>
+    </main>
+
+    <script>
+        const PageContent = document.getElementById('page-content')
+        const PageTitle = document.getElementById('page-title')
+        const Params = new URLSearchParams(window.location.search)
+
+        if (!Params.has('id')) {
+            LoadRounds()
+        } else {
+            LoadRoundDetails(Params.get('id'))
+        }
+
+        async function LoadRounds() {
+            const Rounds = (await (await fetch('https://paul-divide.xv7r8fhghd.workers.dev/')).json()).rounds
+            
+            PageContent.innerHTML = `
+            <ul class="list-unstyled text-center" id="results">
+                ${Rounds.map((x) => `
+                <li class="mb-2">
+                    <a href="?id=${x.id}" class="text-decoration-none">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="p-3" style="${ (x.winningTeam !== 'draw') ? `border: 1.5px solid ${ (x.winningTeam === 'phantoms') ? 'blue' : 'green' }` : ''}; border-radius: 5px }">
+                                    <h3 class="mb-0">Round #${x.id}</h3>
+                                    <small>
+                                        <i>duration: ${x.duration} seconds</i>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                `).join('')}
+            </ul>
+            `
+        }
+
+        async function LoadRoundDetails(id) {
+            const Details = (await (await fetch('https://paul-divide.xv7r8fhghd.workers.dev/get?id=' + id)).json())
+            if (Details.errors !== undefined) {
+                window.location.search = ''
+            }
+
+            PageTitle.innerText = 'Round #' + id
+            PageContent.innerHTML = `
+            <div id="graphs">
+                <canvas id="playerKills"></canvas>
+                <div class="row" id="graphs">
+                    <div class="col">
+                        <canvas id="teamPoints"></canvas>
+                    </div>
+                    <div class="col">
+                        <canvas id="airdropsCollected"></canvas>
+                    </div>
+                </div>
+            </div>
+            `
+
+            new Chart(document.getElementById('playerKills'), {
+                type: 'bar',
+                data: {
+                    labels: Details.players.toSorted((a, b) => b.kills - a.kills).map((x) => x.user.username),
+                    datasets: [
+                        {
+                            label: 'Kills',
+                            data: Details.players.toSorted((a, b) => b.kills - a.kills).map((x) => x.kills),
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Unique Kills',
+                            data: Details.players.toSorted((a, b) => b.kills - a.kills).map((x) => x.uniqueKills),
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Deaths',
+                            data: Details.players.toSorted((a, b) => b.kills - a.kills).map((x) => x.deaths),
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "#fff"
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const TeamContributions = {
+                cobras: 0,
+                phantoms: 0
+            }
+
+            Details.players.forEach(player => {
+                TeamContributions[player.user.team] += player.pointsScored
+            })
+
+            new Chart(document.getElementById('teamPoints'), {
+                type: 'bar',
+                data: {
+                    labels: [
+                        "Cobras (" + Details.players.filter((x) => x.user.team === 'cobras').length + " players)",
+                        "Phantoms (" + Details.players.filter((x) => x.user.team === 'phantoms').length + " players)"
+                    ],
+                    datasets: [
+                        {
+                            label: 'Points Scored',
+                            data: [TeamContributions.cobras, TeamContributions.phantoms],
+                            borderWidth: 1
+                        },
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "#fff"
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('airdropsCollected'), {
+                type: 'pie',
+                data: {
+                    labels: Details.players.toSorted((a, b) => b.airdropsCollected - a.airdropsCollected).map((x) => x.user.username),
+                    datasets: [
+                        {
+                            label: 'Airdrops Collected',
+                            data: Details.players.toSorted((a, b) => b.airdropsCollected - a.airdropsCollected).map((x) => x.airdropsCollected),
+                            borderWidth: 1
+                        },
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "#fff"
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+  </body>
+</html>
